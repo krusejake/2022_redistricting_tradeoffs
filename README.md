@@ -1,6 +1,7 @@
 # Team Name
 
 ### Team Members
+Jake Kruse
 
 ### Final Proposal
 1. Persona/Scenario
