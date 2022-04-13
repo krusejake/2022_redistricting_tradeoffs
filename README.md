@@ -15,7 +15,7 @@ Jake and Yuhan's Redistricting Project for Geog 575
 Please find the requirements.xlsx file in the main folder.
 
 3. Wireframes
-Please find the Powerpoint wireframes file in the main folder.
+Please find Geog575 Final Project WireFrames-Final-Jake & Yuhan.pptx in the main folder.
 
 
 
