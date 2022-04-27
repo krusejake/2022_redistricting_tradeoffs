@@ -17,13 +17,21 @@
     </head>
 
     <body>
-        <!--put your initial page content here-->
-
+        <div id="proposalPanel" style="width: 300px; height: 250px; position: absolute; top: 10px; left: 10px"></div>
+        <div id="pcpPanel" style="width: 600px; height: 250px; position: absolute; top: 10px; left: 320px">
+            <div id="pcpLegend" style="width: 200px; height: 20px; position: absolute; top: 5px; left: 360px"></div>
+            <div id="pcpPlot" style="width: 550px; height: 210px; position: absolute; top: 30px; left: 25px"></div>
+        </div>
+        <div id="mapPanel" style="width: 910px; height: 600px; position: absolute; top: 270px; left: 10px">
+            <div id="mapLegend" style="width: 880px; height: 20px; position: absolute; top: 5px; left: 15px"></div>
+            <div id="map1" style="width: 430px; height: 420px; position: absolute; top: 40px; left: 20px"></div>
+            <div id="map2" style="width: 430px; height: 420px; position: absolute; top: 40px; left: 460px"></div>
+        </div>
         <!--you can also use this space for internal scripts;
         place these within <script> tags-->
 
         <!--put your external script links here-->
         <script type="text/javascript" src="js/main.js"></script>
-        <script type="text/javascript" src="lib/jquery-3.5.1.js"></script>
+        <script type="text/javascript" src="lib/leaflet/leaflet.js"></script>
     </body>
 </html>

@@ -1,1 +1,48 @@
-/*insert style here*/
+@import url("../lib/leaflet/leaflet.css");
+
+.leaflet-container {
+  width: 100%;
+  height: 100vh;
+}
+
+
+/* just to get panels visible for adjustment */
+#proposalPanel{
+    border-style: solid;
+    border-color: gray;
+}
+
+#pcpPanel{
+    border-style: solid;
+    border-color: gray;
+}
+
+#pcpLegend{
+    border-style: solid;
+    border-color: gray;
+}
+
+#pcpPlot{
+    border-style: solid;
+    border-color: gray;
+}
+
+#mapPanel{
+    border-style: solid;
+    border-color: gray;
+}
+
+#map1{
+    border-style: solid;
+    border-color: gray;
+}
+
+#map2{
+    border-style: solid;
+    border-color: gray;
+}
+
+#mapLegend{
+    border-style: solid;
+    border-color: gray;
+}
