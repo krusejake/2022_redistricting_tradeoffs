@@ -71,34 +71,49 @@ googleHybrid = L.tileLayer('http://{s}.google.com/vt/lyrs=s,h&x={x}&y={y}&z={z}'
 // googleHybrid.addTo(map2);
 
 // add geojson
-// var geojson = new L.GeoJSON.AJAX("data/_2012_2020_ElectionData2020_Wards_simple.geojson");
+// var geojson = new L.GeoJSON.AJAX("data/map_1.geojson");
 // geojson.on('data:loaded', function(){
-// geojson.addTo(map1).addTo(map2);
+// geojson.addTo(map1);
+// });
+var geojson1 = new L.GeoJSON.AJAX("data/map_1.geojson");
+geojson1.on('data:loaded', function() { 
+    this.map1.fitBounds(geojson1.getBounds()); geojson1.addTo(this.map1); }.bind(this));
+
+
+// var bounds2 
+// var geojson2 = new L.GeoJSON.AJAX("data/map_2.geojson");
+// geojson2.on('data:loaded', function(){
+//     bounds2 = geojson2.getBounds(),
+//     console.log('in function: ',geojson2.getBounds()),
+//     geojson2.addTo(map2);
 // });
 
-console.log('added first geojson')
-// console.log(geojson)
-var geojson2 = new L.GeoJSON.AJAX("data/map_1.json");
-geojson2.on('data:loaded', function(){
-geojson2.addTo(map1).addTo(map2)
-});
-console.log('should have added the second gejson')
+var geojson2 = new L.GeoJSON.AJAX("data/map_2.geojson");
+geojson2.on('data:loaded', function() { 
+    this.map2.fitBounds(geojson2.getBounds()); geojson2.addTo(this.map2); }.bind(this));
+
+var geojson3 = new L.GeoJSON.AJAX("data/wi_2020_cbgs_voting_demo.geojson");
+geojson3.on('data:loaded', function() { 
+    this.map2.fitBounds(geojson3.getBounds()); geojson3.addTo(this.map2); }.bind(this));
+    // console.log('after function:',bounds2)
+// map1.fitBounds(bounds2);
 
 //--------------------------NEED TO FIGURE OUT HOW TO ZOOM TO EXTENT DEPENDING ON WINDOW SIZE-----------------
-var array = [-92, 42.491983,-86.805415,	43.080621]
-// var array = [20,0,0,20]
-map1.fitBounds(
-    L.latLngBounds(
-    L.latLng(array[1], array[0]),
-    L.latLng(array[3], array[2])));
-map2.fitBounds(
-    L.latLngBounds(
-    L.latLng(array[1], array[0]),
-    L.latLng(array[3], array[2])));
+// var array = [-92, 42.491983,-86.805415,	43.080621]
+// // var array = [20,0,0,20]
+// map1.fitBounds(
+//     L.latLngBounds(
+//     L.latLng(array[1], array[0]),
+//     L.latLng(array[3], array[2])));
+// map2.fitBounds(
+//     L.latLngBounds(
+//     L.latLng(array[1], array[0]),
+//     L.latLng(array[3], array[2])));
 // //add geojson
 // var geojson = new L.GeoJSON.AJAX("data/_2012_2020_ElectionData2020_Wards_simple.geojson");
 // geojson.on('data:loaded', function() { 
-//     this.map.fitBounds(geojson.getBounds()); geojson.addTo(this.map); }.bind(this));
+//     this.map1.fitBounds(geojson.getBounds()); geojson.addTo(this.map1); }.bind(this));
+
 // geojson.on('data:loaded', function(){
 //     // this.map.fitBounds(geojsonLayer.getBounds()),
 //     geojson.addTo(map1);
