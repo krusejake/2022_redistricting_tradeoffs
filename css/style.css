@@ -46,3 +46,9 @@
     border-style: solid;
     border-color: gray;
 }
+
+.title-container{
+    position: absolute;
+    top: 0px;
+    left: -100px;
+}
