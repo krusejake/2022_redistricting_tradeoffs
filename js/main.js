@@ -7,7 +7,8 @@ var curAttribute = attributes[0], // variable for symbolization
     curProp2 = proposals[1]; // right on, change default curProp1 and curProp2 to the "standard" ones on loading
 var propCount = 0; // at most 2 proposals can be chosen
 var zoomLevel = 5; // make sure two maps zoom in to the same level
-var geoJson1, geoJson2; // data files loaded
+var json1, json2; // data files loaded
+
 
 var extents =  { 'population': [723, 750],
             '18+_Pop': [559, 597],
@@ -31,9 +32,11 @@ var extents =  { 'population': [723, 750],
             'inter_flows': [1.93, 5.54],
                 }
 
+var colorScale;
+
 function initialize(){
     createProposal();
-    pcp = createPCP(); // empty chart
+    colorScale = makeColorScale();
     map1 = createMap("map1", curProp1)
     map2 = createMap("map2", curProp2)
 };
@@ -57,13 +60,6 @@ function createProposal(){ //Jake
          // if uncheck one box, enable other checkboxes
          // transition settings?
 
-}
-
-function createPCP(){
-    // create container with an empty svg
-    // add control for attribute selection
-    // resymbolize
-    return pcp
 }
 
 
@@ -133,7 +129,12 @@ function getData(map, curProp){
             return response.json();
         })
         .then(function(json){
-            console.log(json)
+            mapid = map.boxZoom._container.id
+            if (mapid=="map1"){
+                json1 = json
+            } else{
+                json2 = json
+            }
             var choroLayer = createChoropleth(json, map); // initialize with curAttribute
             // set legend, later
 
@@ -151,7 +152,7 @@ function getData(map, curProp){
 
             // create PCP plots and control Yuhan
             // console.log(map)
-            setPCP(json, map.boxZoom._container.id)
+            createPCP(json, mapid)
 
             // create info label, only activate when cbgOn=1
             // createInfoBox()
@@ -165,50 +166,83 @@ function getData(map, curProp){
 
 };
 
+//function to create color scale generator, based on global minmax of an attribute
+function makeColorScale(){
+    var colorClasses = [
+        "#f1eef6",
+        "#045a8d"
+    ];
 
+
+    //create color scale generator
+    colorScale = d3.scaleLinear()
+        .range(colorClasses);
+
+    //build two-value array of minimum and maximum expressed attribute values
+    var minmax = extents[curAttribute];
+    // console.log(minmax)s
+    //assign two-value array as scale domain
+    colorScale.domain(minmax);
+
+    return colorScale;
+};
+
+function setChoroStyle(feature){
+    // console.log(feature.properties[curAttribute])
+    options = {
+        fillColor: colorScale(feature.properties[curAttribute]), 
+        color: "#023858",
+        weight: 1,
+        opacity: 1,
+        fillOpacity: .7,
+    };
+
+    return options
+}
 
 // choropleth by attribute
-// !!!! need to modify symbolization by the same scales
 function createChoropleth(json, map){
-    var layer = L.choropleth(json, {
-            valueProperty: curAttribute, // which property in the features to use
-            scale: ['#f1eef6', '#bdc9e1', '#74a9cf', '#2b8cbe', '#045a8d'], // chroma.js scale - include as many as you like
-            steps: 5, // number of breaks or steps in range
-            mode: 'q', // q for quantile, e for equidistant, k for k-means
-            style: {
-                color: '#fff', // border color
-                weight: 2,
-                fillOpacity: 0.8,
+    var layer = L.geoJson(json, {
+            style: function(feature) { 
+                return setChoroStyle(feature);
             },
             onEachFeature: function(feature, layer) {
-                console.log(layer)
+                // console.log(layer)
+                mapid = map.boxZoom._container.id;
+                districtid = feature.properties.assignment_0
+                // console.log(mapid, districtid)
                 layer.setStyle({
-                    className: "polygon "+map.boxZoom._container.id+'-'+layer.feature.properties.assignment_0
+                    className: "polygon "+ mapid +'-'+districtid
                 });
                 layer.on({
                     mouseover: function(event){
-                        highlight("."+map.boxZoom._container.id+'-'+event.target.feature.properties.assignment_0)
+                        // console.log(event.target)
+                        mapid = event.target._map._container.id
+                        districtid = event.target.feature.properties.assignment_0
+                        // console.log(mapid, districtid)
+                        highlight("."+ mapid +'-'+districtid)
                     },
                     mouseout: function(event){
-                        dehighlight("."+map.boxZoom._container.id+'-'+event.target.feature.properties.assignment_0)
+                        mapid = event.target._map._container.id
+                        districtid = event.target.feature.properties.assignment_0
+                        dehighlight("."+mapid+'-'+districtid)
                     },
                 });
             }
         }).addTo(map)
 
     d3.selectAll('.polygon').append("desc")
-        .text('{"stroke": "#fff", "weight": "2", "fillOpacity": "0.8"}');
+        .text('{"stroke": "#023858", "weight": "2", "fillOpacity": "1"}');
 
     return layer
 };
 
 
-
-function setPCP(json, mapid){
+function createPCP(json, mapid){
     if (mapid=="map1"){
-        color = "#74a9cf"
+        color = "rgba(116,169,207, .8)";
     } else{
-        color = "#fc8d59"
+        color = "rgba(252,141,89, .8)";
     }
 
     //chart frame dimensions
@@ -247,7 +281,7 @@ function setPCP(json, mapid){
       // Build the X scale -> it find the best position for each Y axis
     var x = d3.scalePoint()
         .range([0, chartWidth-10])
-        .padding(0.4)
+        .padding(0.1)
         .domain(attributes);
     
     // The path function take a row of the csv as input, and return x and y coordinates of the line to draw for this raw.
@@ -260,8 +294,7 @@ function setPCP(json, mapid){
         .data(json.features)
         .enter()
         .append("path")
-        .attr("class", function(d){    
-            console.log(d)       
+        .attr("class", function(d){      
             return "lines "  + mapid + '-' + d.properties.assignment_0;        
         })     
         .attr("d", path)   
@@ -298,11 +331,25 @@ function setPCP(json, mapid){
             d3.select(this).call(d3.axisLeft().scale(y[d])); })
         // Add axis title
         .append("text")
+        .attr("class", function(d){return "attr " + d})
         .style("text-anchor", "middle")
         .attr("y", -9)
         .text(function(d) { return d; })
-        .style("fill", "black")        
+        .style("fill", "black")
+        .style("font-size", "12px")
+        .style("font-weight", function(d){
+            if (d==curAttribute){
+                return 900
+            } else {
+                return 500
+            }
+        })
+        .on('click', function(event, d) {
+            curAttribute = d
+            resymbolize(d)
+          })     
     }
+
 
     // console.log(d3.selectAll(".pcpAxis"))
 
@@ -317,7 +364,7 @@ function highlight(className){
         };
     //change stroke
     var selected = d3.selectAll(className)
-        .style("stroke", "#0FC2C0")
+        .style("stroke", "#0FC2C0") //
         .style("stroke-width", "2.5")
         .bringToFront();
     // console.log(selected)
@@ -349,9 +396,61 @@ function dehighlight(className){
     .remove();
 };
 
-function resymbolize(){ // Yuhan
+function resymbolize(newAttribute){ // Yuhan
+    // change current attribute
+    curAttribute = newAttribute
+
+    // change font weight
+    d3.selectAll(".attr")
+    .style("font-weight", function(d){
+        if (d==curAttribute){
+            return 900
+        } else {
+            return 500
+        }
+    });
+
+    //recreate the color scale
+    colorScale = makeColorScale();
+
+
+
+    updateMapLayer(map1)
+    updateMapLayer(map2)
 
 }
+
+
+
+function updateMapLayer(map){
+    map.eachLayer(function(layer){
+        // resymbolize based on map type
+        if (layer.feature){
+            if  (layer.feature.geometry['type']==='Polygon' || layer.feature.geometry['type']==='MultiPolygon'){
+                updateChoropleth(layer);
+            }
+            // if(layer.feature.geometry['type']==='Point'){
+            //     updatePropSymbols(layer, attribute);
+            // }
+            // onEachFeature(layer.feature, layer, attribute);
+
+        }
+    });
+}
+
+function updateChoropleth(layer){
+    //access feature properties
+    var props = layer.feature.properties;
+    //update each feature's color based on new attribute values
+    var options = {
+        fillColor: colorScale(props[curAttribute]),
+        color: "#023858",
+        weight: 1,
+        opacity: 1,
+        fillOpacity: 0.8,
+    };
+    layer.setStyle(options);
+};
 
 //add the title to the map
 function createTitle(map, curProp){
