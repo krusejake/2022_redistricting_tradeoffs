@@ -6,6 +6,11 @@ var curAttribute = attributes[0], // variable for symbolization
     curProp1 = proposals[0], // proposals to show on the map, left one
     curProp2 = proposals[1]; // right on, change default curProp1 and curProp2 to the "standard" ones on loading
 var oldChecked = ['current','effGap']
+var propCount = 0; // at most 2 proposals can be chosen
+var zoomLevel = 5; // make sure two maps zoom in to the same level
+var json1, json2, pointJson1, pointJson2, prop1, prop2; // data files loaded
+var curExpression = "choropleth" //"choropleth"
+var colorScale;
 var mapPropDict = {
         'current':'map1',
         'effGap':'map2'
@@ -62,25 +67,44 @@ https://vanillajstoolkit.com/polyfills/arrayforeach/
 
 function initialize(){
     createProposal();
-    pcp = createPCP(); // empty chart
+    colorScale = makeColorScale();
     map1 = createMap("map1", curProp1)
-    // console.log('checks1')
     map2 = createMap("map2", curProp2)
+    reexpress()
+}
+
+
+//add the title to the map
+function createTitle(map, curProp){
+	//add a new control to the map to show the text content
+    var TitleControl = L.Control.extend({
+        onAdd: function (map) {
+            // create the control container with a particular class name
+            var container = L.DomUtil.create("div", "title-container");
+            // container.style.position = "absolute";
+            // container.style.left = "100px";
+			
+			//specify the title content
+			var content = "<h3 class='title_class'>" + curProp + " map</h3>";
+			container.insertAdjacentHTML("beforeend", content)
+			
+			//disable click inside the container
+			L.DomEvent.disableClickPropagation(container);
+
+            return container;
+        }
+    });
+    map.addControl(new TitleControl());
+    // map._controlContainer.innerHTML = ''
+    // console.log('map._controlContainer',curProp,map._controlContainer.innerHTML)
+    // console.log("document.getElementById('title-container').textContent",map.getElementById('title-container leaflet-control'))
+    // console.log.getElementById("title-container leaflet-control"))
 }
 
 function createProposal(){ //Jake
     // var container = document.querySelector("#proposalPanel")
     //only allow <=2 checkboxes to be checked at a time
     var checks = document.querySelectorAll(".check");
-    // console.log(checks,'checks')
-    // checks.forEach(v=> {
-    //     if (v.checked == 1){
-    //         // console.log('Checked:',v.name);
-    //     }
-    //     else {
-    //         // console.log('Not checked:',v.name);
-    //     }
-    // })
     var max = 2;
     for (var i = 0; i < checks.length; i++)
         checks[i].onclick = selectiveCheck;
@@ -111,79 +135,31 @@ function createProposal(){ //Jake
             return currList.filter(x => s.has(x))
 
         }
-        // console.log('list of elements that exist in both:',intersection(currList, newChecked))
         var inBoth = intersection(currList, newChecked)
-
+        console.log('in both = ',inBoth)
+        // if only one map changes
         if (newChecked.length == 2 && inBoth.length == 1){
             console.log('newChecked.length == 2 && inBoth.length == 1')
-            currList.forEach(curProp=> {
-                if (curProp!= inBoth[0]){
-                    curProp = inBoth[0]
-                    console.log('updating map!')
-                    // how to id map?
-                    steadyMap = mapPropDict[inBoth[0]]
-                    console.log('stedyMap = ',steadyMap)
-                    if (steadyMap == 'map1'){
-                        // map2.clearLayers();
-                        map2.eachLayer(function (layer) {
-                            console.log(layer)
-                            map2.removeLayer(layer);
-                        });
-                        getData(map2, curProp)
-                        createTitle(map2, curProp); 
-                    }
-                    else {
-                        map2.eachLayer(function (layer) {
-                            map2.removeLayer(layer);
-                        });
-                        getData(map1, curProp)
-                        createTitle(map1, curProp); 
-                    }
-        
+            console.log('currList = ',currList)
+            var curProp = newChecked.filter(a => a !== inBoth[0]);
+            console.log('curProp = ',curProp)
+            steadyMap = mapPropDict[inBoth[0]]
+            console.log('stedyMap = ',steadyMap)
+            if (steadyMap == 'map1'){
+                console.log('updating map1')
+                clearGeojson(map2)
+                getData(map2, curProp)
+                map2._controlContainer.getElementsByClassName('title_class')[0].innerHTML = curProp
+                }   
+            if (steadyMap == 'map2'){
+                console.log('updating map2')
+                clearGeojson(map1)
+                getData(map1, curProp)
+                map1._controlContainer.getElementsByClassName('title_class')[0].innerHTML = curProp
                 }
-            })
-        //     checkedChecks.forEach(v=> {
-        //         console.log('Checked:',v.name);
-        //         // if ()
+            
         }
-
-        // checkedChecks.forEach(v=> {
-        //     console.log('Checked:',v.name);
-        //     if (v.checked == 1){
-        //         console.log('Checked:',v.name);
-        //     }
-        //     if (v.name !=curProp1 && v.name !=curProp2){
-        //         console.log('v.checked !=curProp1 or currProp2: ',v.name)
-        //         // var index = checkedAttributes.indexOf(v.name)
-        //         // if (index >-1) {
-        //             // checkedAttributes.splice(index,1).push()
-        //         // }
-        //     }
-        // // set this maps as the new reference
-        // oldChecked = newChecked
-        
-        // else{
-        
-        // }
-        // })
-    }
-    // console.log(container)
-    //insert text of categories
-    
-    // insert proposal checkboxes
-    // for (var i=1; i<proposals.length; i++){
-    //     // insert button
- 
-    // }
-    
-    // add checkbox listener
-    //1. add proposal selection checkbox
-        // change curProp1
-        // change curProp2
-        // update propCount, 
-         //if propCount==2, disable other check boxes
-         // if uncheck one box, enable other checkboxes
-         // transition settings?
+       }
 
 }
 
@@ -292,47 +268,185 @@ function getData(map, curProp){
         })
 
 };
+function setChoroStyle(feature){
+    // console.log(feature.properties[curAttribute])
+    options = {
+        fillColor: colorScale(feature.properties[curAttribute]), 
+        color: "#023858",
+        weight: 1,
+        opacity: 1,
+        fillOpacity: .7,
+    };
+
+    return options
+}
+function reexpress(){
+    
+    document.querySelector('#'+curExpression).disabled = true;
+    //click listener for buttons
+
+    document.querySelectorAll('.reexpress').forEach(function(btn){
+        btn.addEventListener("click", function(){
+            var newExpression = btn.id;
+
+            document.querySelector('#'+curExpression).disabled = false;
+            changeExpression(map1, newExpression);
+            changeExpression(map2, newExpression);
+            curExpression = newExpression;
+            document.querySelector('#'+curExpression).disabled = true;
+        });
+    })
+
+}
+// attach popups to features
+function onEachFeature(feature, layer, map, expression) {
+    mapid = map.boxZoom._container.id;
+    districtid = feature.properties.assignment_0;
+    // if (expression==curExpression){
+    layer.setStyle({
+        className: "polygon "+ expression + " " + mapid +'-'+districtid
+    });
+    layer.on({
+        mouseover: function(event){
+            // console.log(event.target)
+            mapid = event.target._map._container.id
+            districtid = event.target.feature.properties.assignment_0
+            // console.log(mapid, districtid)
+            highlight("."+ mapid +'-'+districtid)
+        },
+        mouseout: function(event){
+            mapid = event.target._map._container.id
+            districtid = event.target.feature.properties.assignment_0
+            dehighlight("."+mapid+'-'+districtid)
+        },
+    });
+        
+    // } else {
+    //     layer.setStyle({
+    //         className: "polygon "+ expression
+    //     });
+    // }
 
 
+}
+function changeExpression(map, newExpression){
+    
+    var mapid = map.boxZoom._container.id;
 
-// choropleth by attribute
-// !!!! need to modify symbolization by the same scales
+    if (mapid=="map1"){
+        // json = json1;
+        // pointJson = pointJson1;
+        curProp = curProp1;
+    }
+    else{
+        // json = json2;
+        // pointJson = pointJson2;
+        curProp = curProp2;
+    }
+    // console.log(map)
+    if ((curExpression=="choropleth") || (curExpression=="propSymbol")){
+        clearGeojson(map)
+    } else{
+        clearBar(mapid)
+    }
+    //change curExpression
+    // document.querySelector('#'+curExpression).disabled = true;
+    //reexpress
+
+    if (newExpression=="choropleth"){
+        getChoroData(map, curProp)
+    } 
+    else if(newExpression=="propSymbol"){
+        getPropData(map, curProp);
+    }
+    else {
+        getBarData(mapid, curProp)
+    }
+}
+
 function createChoropleth(json, map){
-    var layer = L.choropleth(json, {
-            valueProperty: curAttribute, // which property in the features to use
-            scale: ['#f1eef6', '#bdc9e1', '#74a9cf', '#2b8cbe', '#045a8d'], // chroma.js scale - include as many as you like
-            steps: 5, // number of breaks or steps in range
-            mode: 'q', // q for quantile, e for equidistant, k for k-means
-            style: {
-                color: '#fff', // border color
-                weight: 2,
-                fillOpacity: 0.8,
+    
+    // add button for choropleth map
+    var mapid = map.boxZoom._container.id;
+    var layer = L.geoJson(json, {
+            style: function(feature) { 
+                return setChoroStyle(feature);
             },
-            onEachFeature: function(feature, layer) {
-                // console.log(layer)
-                layer.setStyle({
-                    className: "polygon "+map.boxZoom._container.id+'-'+layer.feature.properties.assignment_0
-                });
-                layer.on({
-                    mouseover: function(event){
-                        highlight("."+map.boxZoom._container.id+'-'+event.target.feature.properties.assignment_0)
-                    },
-                    mouseout: function(event){
-                        dehighlight("."+map.boxZoom._container.id+'-'+event.target.feature.properties.assignment_0)
-                    },
-                });
+            onEachFeature: function(feature, layer){
+                onEachFeature(feature, layer, map, "choropleth")
             }
         }).addTo(map)
-        oldLayers.push(layer)
 
-    d3.selectAll('.polygon').append("desc")
-        .text('{"stroke": "#fff", "weight": "2", "fillOpacity": "0.8"}');
+    if (mapid=="map2"){
+        if (curExpression=="choropleth"){
+            d3.selectAll('.choropleth').append("desc")
+            .text('{"stroke": "#023858", "weight": "1", "fillOpacity": "1"}');
+        } else{
+            d3.selectAll('.choropleth').append("desc")
+            .text('{"stroke": "#023858", "weight": "1", "fillColor": "none", "fillOpacity": "1"}');
+        }
+
+    }
 
     return layer
 };
 
+// choropleth by attribute
+// !!!! need to modify symbolization by the same scales
+// function createChoropleth(json, map){
+//     var layer = L.choropleth(json, {
+//             valueProperty: curAttribute, // which property in the features to use
+//             scale: ['#f1eef6', '#bdc9e1', '#74a9cf', '#2b8cbe', '#045a8d'], // chroma.js scale - include as many as you like
+//             steps: 5, // number of breaks or steps in range
+//             mode: 'q', // q for quantile, e for equidistant, k for k-means
+//             style: {
+//                 color: '#fff', // border color
+//                 weight: 2,
+//                 fillOpacity: 0.8,
+//             },
+//             onEachFeature: function(feature, layer) {
+//                 // console.log(layer)
+//                 layer.setStyle({
+//                     className: "polygon "+map.boxZoom._container.id+'-'+layer.feature.properties.assignment_0
+//                 });
+//                 layer.on({
+//                     mouseover: function(event){
+//                         highlight("."+map.boxZoom._container.id+'-'+event.target.feature.properties.assignment_0)
+//                     },
+//                     mouseout: function(event){
+//                         dehighlight("."+map.boxZoom._container.id+'-'+event.target.feature.properties.assignment_0)
+//                     },
+//                 });
+//             }
+//         }).addTo(map)
+//         oldLayers.push(layer)
+
+//         d3.selectAll('.polygon').append("desc")
+//             .text('{"stroke": "#fff", "weight": "2", "fillOpacity": "0.8"}');
+
+//     return layer
+// };
 
 
+function makeColorScale(){
+    var colorClasses = [
+        "rgba(241,238,246,.7)",
+        "rgba(4,90,141,.7)",
+    ];
+
+
+    //create color scale generator
+    colorScale = d3.scaleLinear()
+        .range(colorClasses);
+
+    //build two-value array of minimum and maximum curExpression attribute values
+    var minmax = extents[curAttribute];
+    // console.log(minmax)s
+    //assign two-value array as scale domain
+    colorScale.domain(minmax);
+
+    return colorScale;
+};
 function setPCP(json, mapid){
     if (mapid=="map1"){
         color = "#74a9cf"
@@ -478,31 +592,72 @@ function dehighlight(className){
     .remove();
 };
 
-function resymbolize(){ // Yuhan
+function resymbolize(newAttribute, transparent){ // Yuhan
+    // change current attribute
+    curAttribute = newAttribute
 
-}
-
-//add the title to the map
-function createTitle(map, curProp){
-	//add a new control to the map to show the text content
-    var TitleControl = L.Control.extend({
-        onAdd: function (map) {
-            // create the control container with a particular class name
-            var container = L.DomUtil.create("div", "title-container "+curProp);
-            // container.style.position = "absolute";
-            // container.style.left = "100px";
-			
-			//specify the title content
-			var content = "<h3>" + curProp + " map</h3>";
-			container.insertAdjacentHTML("beforeend", content)
-			
-			//disable click inside the container
-			L.DomEvent.disableClickPropagation(container);
-
-            return container;
+    // change font weight
+    d3.selectAll(".attr")
+    .style("font-weight", function(d){
+        if (d==curAttribute){
+            return 900
+        } else {
+            return 500
         }
     });
-    map.addControl(new TitleControl());
+
+    //recreate the color scale
+    colorScale = makeColorScale();
+    minValue = extents[curAttribute][0],
+    maxValue = extents[curAttribute][1];
+
+    //create a scale to size bars proportionally to frame and for axis
+    yScale = d3.scaleLinear()
+        .range([chartInnerHeight, 0])
+        .domain([minValue*0.95, maxValue*1.02]);
+
+    console.log(curExpression, transparent)
+
+
+    if (curExpression=="bar"){
+        updateChart("map1", json1.features.length)
+        updateChart("map2", json2.features.length)
+    } else {
+        console.log(transparent)
+        updateMapLayer(map1, transparent)
+        updateMapLayer(map2, transparent)
+    }
+
+
 }
+
+function clearGeojson(map){
+    {
+        map.eachLayer(function(layer){
+
+            // resymbolize based on map type
+            if (layer.feature){
+                // if ((curExpression=="choropleth") && (layer.feature.geometry['type']==='Polygon' || layer.feature.geometry['type']==='MultiPolygon')){
+                //     // console.log(layer)
+                //     map.removeLayer(layer)
+                // }
+                // if ((curExpression=="propSymbol") && (layer.feature.geometry['type']==='Point')){
+                //     map.removeLayer(layer)
+                // }
+                // // onEachFeature(layer.feature, layer, attribute);
+                map.removeLayer(layer)
+    
+            }
+        });
+    };
+}
+
+function clearBar(mapid){
+    d3.select(".chart-"+mapid).remove();
+    // d3.select(".chart-map1").remove();
+}
+
+
+
 
 document.addEventListener("DOMContentLoaded",initialize)
