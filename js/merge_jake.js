@@ -5,10 +5,15 @@ var proposals = ["current", "effGap", "compactness", "modularity", "pmc"] // the
 var curAttribute = attributes[0], // variable for symbolization
     curProp1 = proposals[0], // proposals to show on the map, left one
     curProp2 = proposals[1]; // right on, change default curProp1 and curProp2 to the "standard" ones on loading
+var oldChecked = ['current','effGap']
+var mapPropDict = {
+        'current':'map1',
+        'effGap':'map2'
+}
+var oldLayers = []
 var propCount = 0; // at most 2 proposals can be chosen
 var zoomLevel = 5; // make sure two maps zoom in to the same level
 var geoJson1, geoJson2; // data files loaded
-
 var extents =  { 'population': [723, 750],
             '18+_Pop': [559, 597],
             'PISLAND18': [0.2, 0.3],
@@ -31,23 +36,146 @@ var extents =  { 'population': [723, 750],
             'inter_flows': [1.93, 5.54],
                 }
 
+// Select all checkboxes with the name 'settings' using querySelectorAll.
+// var checkboxes = document.querySelectorAll("input[type=checkbox][name=settings]");
+// let enabledSettings = []
+
+/*
+For IE11 support, replace arrow functions with normal functions and
+use a polyfill for Array.forEach:
+https://vanillajstoolkit.com/polyfills/arrayforeach/
+*/
+
+// Use Array.forEach to add an event listener to each checkbox.
+// checkboxes.forEach(function(checkbox) {
+//   checkbox.addEventListener('change', function() {
+//     enabledSettings = 
+//       Array.from(checkboxes) // Convert checkboxes to an array to use filter and map.
+//       .filter(i => i.checked) // Use Array.filter to remove unchecked checkboxes.
+//       .map(i => i.value) // Use Array.map to extract only the checkbox values from the array of objects.
+//     //   console.log(enabledSettings)
+
+    //   }  
+    
+//   })
+// });
+
 function initialize(){
     createProposal();
     pcp = createPCP(); // empty chart
     map1 = createMap("map1", curProp1)
+    // console.log('checks1')
     map2 = createMap("map2", curProp2)
-};
+}
 
 function createProposal(){ //Jake
-    var container = document.querySelector("#proposalPanel")
-    console.log(container)
+    // var container = document.querySelector("#proposalPanel")
+    //only allow <=2 checkboxes to be checked at a time
+    var checks = document.querySelectorAll(".check");
+    // console.log(checks,'checks')
+    // checks.forEach(v=> {
+    //     if (v.checked == 1){
+    //         // console.log('Checked:',v.name);
+    //     }
+    //     else {
+    //         // console.log('Not checked:',v.name);
+    //     }
+    // })
+    var max = 2;
+    for (var i = 0; i < checks.length; i++)
+        checks[i].onclick = selectiveCheck;
+    
+    function selectiveCheck (event) {
+        // get the checked boxes
+        var checkedChecks = document.querySelectorAll(".check:checked");
+        console.log(checkedChecks,checkedChecks.length,'checkedChecks')
+        // don't let user check more than two boxes
+        if (checkedChecks.length >= max + 1)
+            return false;
+        console.log('Current proposal vars: ',curProp1,curProp2)
+        // if they haven't checked more than two (or else would have returned above),
+        //       see if they checked a new box
+        //
+        newChecked = []
+        checkedChecks.forEach(v=> {
+            newChecked.push(v.name)
+        })
+        console.log('oldChecked',oldChecked)
+        console.log('newChecked',newChecked)
+        var currList = [curProp1,curProp2]
+        
+
+        // need to find out which of the boxes is the newly checked box, and which curProp it should replace
+        const intersection = (currList, newChecked) => {
+            const s = new Set(newChecked);
+            return currList.filter(x => s.has(x))
+
+        }
+        // console.log('list of elements that exist in both:',intersection(currList, newChecked))
+        var inBoth = intersection(currList, newChecked)
+
+        if (newChecked.length == 2 && inBoth.length == 1){
+            console.log('newChecked.length == 2 && inBoth.length == 1')
+            currList.forEach(curProp=> {
+                if (curProp!= inBoth[0]){
+                    curProp = inBoth[0]
+                    console.log('updating map!')
+                    // how to id map?
+                    steadyMap = mapPropDict[inBoth[0]]
+                    console.log('stedyMap = ',steadyMap)
+                    if (steadyMap == 'map1'){
+                        // map2.clearLayers();
+                        map2.eachLayer(function (layer) {
+                            console.log(layer)
+                            map2.removeLayer(layer);
+                        });
+                        getData(map2, curProp)
+                        createTitle(map2, curProp); 
+                    }
+                    else {
+                        map2.eachLayer(function (layer) {
+                            map2.removeLayer(layer);
+                        });
+                        getData(map1, curProp)
+                        createTitle(map1, curProp); 
+                    }
+        
+                }
+            })
+        //     checkedChecks.forEach(v=> {
+        //         console.log('Checked:',v.name);
+        //         // if ()
+        }
+
+        // checkedChecks.forEach(v=> {
+        //     console.log('Checked:',v.name);
+        //     if (v.checked == 1){
+        //         console.log('Checked:',v.name);
+        //     }
+        //     if (v.name !=curProp1 && v.name !=curProp2){
+        //         console.log('v.checked !=curProp1 or currProp2: ',v.name)
+        //         // var index = checkedAttributes.indexOf(v.name)
+        //         // if (index >-1) {
+        //             // checkedAttributes.splice(index,1).push()
+        //         // }
+        //     }
+        // // set this maps as the new reference
+        // oldChecked = newChecked
+        
+        // else{
+        
+        // }
+        // })
+    }
+    // console.log(container)
     //insert text of categories
     
     // insert proposal checkboxes
-    for (var i=1; i<proposals.length; i++){
-        // insert button
+    // for (var i=1; i<proposals.length; i++){
+    //     // insert button
  
-    }
+    // }
+    
     // add checkbox listener
     //1. add proposal selection checkbox
         // change curProp1
@@ -133,7 +261,7 @@ function getData(map, curProp){
             return response.json();
         })
         .then(function(json){
-            console.log(json)
+            // console.log(json)
             var choroLayer = createChoropleth(json, map); // initialize with curAttribute
             // set legend, later
 
@@ -181,7 +309,7 @@ function createChoropleth(json, map){
                 fillOpacity: 0.8,
             },
             onEachFeature: function(feature, layer) {
-                console.log(layer)
+                // console.log(layer)
                 layer.setStyle({
                     className: "polygon "+map.boxZoom._container.id+'-'+layer.feature.properties.assignment_0
                 });
@@ -195,6 +323,7 @@ function createChoropleth(json, map){
                 });
             }
         }).addTo(map)
+        oldLayers.push(layer)
 
     d3.selectAll('.polygon').append("desc")
         .text('{"stroke": "#fff", "weight": "2", "fillOpacity": "0.8"}');
@@ -261,7 +390,7 @@ function setPCP(json, mapid){
         .enter()
         .append("path")
         .attr("class", function(d){    
-            console.log(d)       
+            // console.log(d)       
             return "lines "  + mapid + '-' + d.properties.assignment_0;        
         })     
         .attr("d", path)   

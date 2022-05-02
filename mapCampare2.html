@@ -95,8 +95,8 @@ geojson2.on('data:loaded', function() {
 var geojson3 = new L.GeoJSON.AJAX("data/wi_2020_cbgs_voting_demo.geojson");
 geojson3.on('data:loaded', function() { 
     this.map2.fitBounds(geojson3.getBounds()); geojson3.addTo(this.map2); }.bind(this));
-    // console.log('after function:',bounds2)
-// map1.fitBounds(bounds2);
+    console.log('after function:',bounds2)
+map1.fitBounds(bounds2);
 
 //--------------------------NEED TO FIGURE OUT HOW TO ZOOM TO EXTENT DEPENDING ON WINDOW SIZE-----------------
 // var array = [-92, 42.491983,-86.805415,	43.080621]
