@@ -112,7 +112,6 @@ function createProposal(){ //Jake
     function selectiveCheck (event) {
         // get the checked boxes
         var checkedChecks = document.querySelectorAll(".check:checked");
-        console.log(checkedChecks,checkedChecks.length,'checkedChecks')
         // don't let user check more than two boxes
         if (checkedChecks.length >= max + 1)
             return false;
@@ -127,7 +126,7 @@ function createProposal(){ //Jake
         console.log('oldChecked',oldChecked)
         console.log('newChecked',newChecked)
         var currList = [curProp1,curProp2]
-        
+        console.log('currList',currList)
 
         // need to find out which of the boxes is the newly checked box, and which curProp it should replace
         const intersection = (currList, newChecked) => {
@@ -137,27 +136,64 @@ function createProposal(){ //Jake
         }
         var inBoth = intersection(currList, newChecked)
         console.log('in both = ',inBoth)
+
         // if only one map changes
         if (newChecked.length == 2 && inBoth.length == 1){
             console.log('newChecked.length == 2 && inBoth.length == 1')
             console.log('currList = ',currList)
-            var curProp = newChecked.filter(a => a !== inBoth[0]);
+            var curProp = newChecked.filter(a => a !== inBoth[0])[0];
+            var removeVar = currList.filter(a => a !== inBoth[0])[0];
             console.log('curProp = ',curProp)
+            console.log('removeVar = ',removeVar)
             steadyMap = mapPropDict[inBoth[0]]
-            console.log('stedyMap = ',steadyMap)
+            console.log('steadyMap = ',steadyMap)
+            // console.log('stedyMap = ',steadyMap)
             if (steadyMap == 'map1'){
-                console.log('updating map1')
+                console.log('updating map2')
                 clearGeojson(map2)
                 getData(map2, curProp)
                 map2._controlContainer.getElementsByClassName('title_class')[0].innerHTML = curProp
+                console.log(curProp, curProp1, curProp2)
+                if (removeVar == curProp1){
+                    curProp1 = curProp
+                    console.log('map2 if = ',curProp, curProp1, curProp2)
+                    // var mapPropDict = {
+                    //     'current':'map1',
+                    //     'effGap':'map2'
+                    delete mapPropDict[removeVar]
+                    mapPropDict[curProp1] = 'map2'
+                // }
+                }
+                if (removeVar == curProp2){
+                    curProp2 = curProp
+                    console.log('map2 if = ',curProp, curProp1, curProp2)
+                    delete mapPropDict[removeVar]
+                    mapPropDict[curProp2] = 'map2'
+                    
+                }
                 }   
             if (steadyMap == 'map2'){
-                console.log('updating map2')
+                console.log('updating map1')
                 clearGeojson(map1)
                 getData(map1, curProp)
                 map1._controlContainer.getElementsByClassName('title_class')[0].innerHTML = curProp
+                console.log(curProp, curProp1, curProp2)
+                if (removeVar == curProp1){
+                    curProp1 = curProp
+                    console.log('map2 if = ',curProp, curProp1, curProp2)
+                    delete mapPropDict[removeVar]
+                    mapPropDict[curProp1] = 'map2'
                 }
-            
+                if (removeVar == curProp2){
+                    curProp2 = curProp
+                    console.log('map2 if = ',curProp, curProp1, curProp2)
+                    delete mapPropDict[removeVar]
+                    mapPropDict[curProp2] = 'map1'
+                    
+                }
+                }
+            var currList = [curProp1,curProp2]
+            console.log('currList',currList)
         }
        }
 
