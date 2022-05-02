@@ -24,14 +24,24 @@
         </div>
         <div id="mapPanel" style="width: 910px; height: 480px; position: absolute; top: 270px; left: 10px">
             <div id="mapLegend" style="width: 880px; height: 20px; position: absolute; top: 5px; left: 15px"></div>
-            <div id="map1" style="width: 430px; height: 420px; position: absolute; top: 40px; left: 20px"></div>
-            <div id="map2" style="width: 430px; height: 420px; position: absolute; top: 40px; left: 460px"></div>
+            <div id="map1" style="width: 430px; height: 420px; position: absolute; top: 40px; left: 20px">
+                <div class="chart-container-map1" style="width: 400px; height: 350px; position: absolute; top: 13px; left: 3px; z-index: 10000"></div>
+            </div>
+            <div id="map2" style="width: 430px; height: 420px; position: absolute; top: 40px; left: 460px">
+                <div class="reexpress-control" style="width: 30px; height: 96px; position: absolute; top: 220px; left: 387px; z-index: 15000">
+                    <button class="reexpress" id="choropleth"><img src="img/choroButton.png"></button>
+                    <button class="reexpress" id="propSymbol"><img src="img/symbolButton.png"></button>
+                    <button class="reexpress" id="bar"><img src="img/barButton.png"></button>
+                </div>
+                <!-- <div class="chart-container-map2" style="width: 30px; height: 96px; position: absolute; top: 220px; left: 40px; z-index: 10000"></div> -->
+                <div class="chart-container-map2" style="width: 400px; height: 350px; position: absolute; top: 13px; left: 3px; z-index: 10000"></div>
+            </div>
         </div>
         <!--you can also use this space for internal scripts;
         place these within <script> tags-->
 
         <!--put your external script links here-->
-        <script type="text/javascript" src="js/main.js"></script>
+        <script type="text/javascript" src="js/yuhan.js"></script>
         <script type="text/javascript" src="lib/leaflet/leaflet.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet-ajax/2.1.0/leaflet.ajax.min.js"></script>
         <script type="text/javascript" src="lib/leaflet-choropleth-gh-pages/dist/choropleth.js"></script>

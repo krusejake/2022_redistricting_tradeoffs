@@ -33,11 +33,13 @@
 }
 
 #map1{
+    background-color: #fff;
     border-style: solid;
     border-color: gray;
 }
 
 #map2{
+    background-color: #fff;
     border-style: solid;
     border-color: gray;
 }
@@ -51,4 +53,103 @@
     position: absolute;
     top: 0px;
     left: -100px;
+}
+
+/* .reexpress-control {
+    border-style: solid;
+    border-width: .2em;
+    border-color: lightgray;
+} */
+
+.reexpress {
+    background-color: #fff;
+    border-color: lightgray;
+    border-width: .2em;
+    opacity: .8;
+    width: 32px;
+    height: 32px;
+    
+}
+
+button:disabled {
+    background: #C3C3C3;
+    /* color : #C3C3C3; */
+}
+
+button:enabled {
+    background: #fff;
+    /* color : #C3C3C3; */
+}
+.reexpress img {  
+    
+    align-items: left;
+    width: 22px;  
+    height: 22px;  
+    margin: 0 0 0 -2px;
+} 
+
+.chart-container-map1 {
+    float: left;
+    width: 400px;
+    height: 350px;
+    margin: 40px 0 0 20px;
+    z-index: 5000;    
+}
+
+.chart-container-map2 {
+    float: left;
+    width: 400px;
+    height: 350px;
+    margin: 40px 0 0 20px;
+    z-index: 5000;    
+}
+
+.leaflet-control-layers {
+    width: 30px;
+    height: 30px;
+}
+
+.leaflet-touch .leaflet-control-layers-toggle {
+    width: 30px;
+    height: 30px;
+}
+
+.chart {
+    background-color: none;
+    border: none;
+    float: right;
+    margin: 100px 50px 0 0;
+    z-index: 500;
+}
+
+/* .chartTitle {
+    font-family: sans-serif;
+    font-size: 1.5em;
+    font-weight: bold;
+} */
+
+.chartBackground {
+    fill: none;
+}
+
+.chartFrame {
+    background-color: none;
+    fill: none;
+    stroke: lightgray;
+    stroke-width: 1.5px;
+    shape-rendering: crispEdges;
+}
+
+.axis path,
+.axis line {
+    fill: none;
+    stroke: gray;
+    stroke-width: 1px;
+    shape-rendering: crispEdges;
+}
+
+.axis text {
+    font-family: sans-serif;
+    font-size: 0.8em;
+    fill: gray;
 }
