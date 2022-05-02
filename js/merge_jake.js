@@ -70,7 +70,16 @@ function initialize(){
     colorScale = makeColorScale();
     map1 = createMap("map1", curProp1)
     map2 = createMap("map2", curProp2)
-    reexpress()
+    reexpress()    
+    if (true) {
+        console.log('1')
+    }
+    if (true) {
+        console.log('2')
+    }
+    else if (true) {
+        console.log('3')
+    }
 }
 
 
@@ -135,8 +144,8 @@ function createProposal(){ //Jake
 
         }
         var inBoth = intersection(currList, newChecked)
-        console.log('in both = ',inBoth)
-
+        console.log('in both = ',inBoth,(inBoth.length == 0))
+        console.log('start of if statements')
         // if only one map changes
         if (newChecked.length == 2 && inBoth.length == 1){
             console.log('newChecked.length == 2 && inBoth.length == 1')
@@ -157,21 +166,16 @@ function createProposal(){ //Jake
                 if (removeVar == curProp1){
                     curProp1 = curProp
                     console.log('map2 if = ',curProp, curProp1, curProp2)
-                    // var mapPropDict = {
-                    //     'current':'map1',
-                    //     'effGap':'map2'
                     delete mapPropDict[removeVar]
                     mapPropDict[curProp1] = 'map2'
-                // }
                 }
                 if (removeVar == curProp2){
                     curProp2 = curProp
                     console.log('map2 if = ',curProp, curProp1, curProp2)
                     delete mapPropDict[removeVar]
                     mapPropDict[curProp2] = 'map2'
-                    
                 }
-                }   
+                }  
             if (steadyMap == 'map2'){
                 console.log('updating map1')
                 clearGeojson(map1)
@@ -189,15 +193,33 @@ function createProposal(){ //Jake
                     console.log('map2 if = ',curProp, curProp1, curProp2)
                     delete mapPropDict[removeVar]
                     mapPropDict[curProp2] = 'map1'
-                    
                 }
-                }
+            }
+        }
+        // if both unchecked/are different
+        if (newChecked.length == 2 && inBoth.length == 0){
+            console.log('both unchecked')
             var currList = [curProp1,curProp2]
             console.log('currList',currList)
+            mapPropDict = {}
+            curProp1 = newChecked[0]
+            curProp2 = newChecked[1]
+            mapPropDict[curProp1] = 'map1'
+            mapPropDict[curProp2] = 'map2'
+            clearGeojson(map1)
+            getData(map1, curProp1)
+            clearGeojson(map2)
+            getData(map2, curProp2)
+            map1._controlContainer.getElementsByClassName('title_class')[0].innerHTML = curProp1
+            map2._controlContainer.getElementsByClassName('title_class')[0].innerHTML = curProp2
+            }
+    console.log('end of createProposal')
+    console.log('END: in both = ',inBoth,(inBoth.length == 0))
         }
-       }
+    
+       } // end of createProposal()
 
-}
+// } //end of parent function
 
 function createPCP(){
     // create container with an empty svg
