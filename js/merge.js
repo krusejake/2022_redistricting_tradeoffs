@@ -3,14 +3,17 @@ var map1, map2, pcp;
 var attributes = ["population", "D_votes", "R_votes"]
 var proposals = ["current", "effGap", "compactness", "modularity", "pmc"] // the same as the checkbox class (cb-xx) and file names
 var curAttribute = attributes[0], // variable for symbolization
-    curProp1 = proposals[0], // proposals to show on the map, left one
-    curProp2 = proposals[1]; // right on, change default curProp1 and curProp2 to the "standard" ones on loading
+    curProp1 = "current" //proposals[0], // proposals to show on the map, left one
+    curProp2 = "effGap" //proposals[1]; // right on, change default curProp1 and curProp2 to the "standard" ones on loading
+var oldChecked = [curProp1,curProp2];
 var propCount = 0; // at most 2 proposals can be chosen
 var zoomLevel = 5; // make sure two maps zoom in to the same level
 var json1, json2, pointJson1, pointJson2, prop1, prop2; // data files loaded
 var curExpression = "choropleth" //"choropleth"
 var color1 = "rgba(116,169,207, .8)", color2 = "rgba(252,141,89, .8)";
 
+// Not work when changing initial setting of expression
+// need to update pcp and pcp legend when changing proposal 
 
 var extents =  { 'population': [723, 750],
             '18+_Pop': [559, 597],
@@ -35,6 +38,11 @@ var extents =  { 'population': [723, 750],
                 }
 
 var colorScale;
+var mapPropDict = {
+    'current':'map1',
+    'effGap':'map2'
+}
+var oldLayers = []
 
 //chart global variables
 var chartWidth = 360,
@@ -73,24 +81,129 @@ function initialize(){
 };
 
 function createProposal(){ //Jake
-    var container = document.querySelector("#proposalPanel")
-    console.log(container)
-    //insert text of categories
+    // var container = document.querySelector("#proposalPanel")
+    //only allow <=2 checkboxes to be checked at a time
+    // need to coordinate check box and reexpression button
+    var checks = document.querySelectorAll(".check");
+    var max = 2;
+    for (var i = 0; i < checks.length; i++)
+        checks[i].onclick = selectiveCheck;
     
-    // insert proposal checkboxes
-    for (var i=1; i<proposals.length; i++){
-        // insert button
- 
-    }
-    // add checkbox listener
-    //1. add proposal selection checkbox
-        // change curProp1
-        // change curProp2
-        // update propCount, 
-         //if propCount==2, disable other check boxes
-         // if uncheck one box, enable other checkboxes
-         // transition settings?
+    function selectiveCheck (event) {
+        // get the checked boxes
+        var checkedChecks = document.querySelectorAll(".check:checked");
+        // don't let user check more than two boxes
+        if (checkedChecks.length >= max + 1)
+            return false;
+        console.log('Current proposal vars: ',curProp1,curProp2)
+        // if they haven't checked more than two (or else would have returned above),
+        //       see if they checked a new box
+        //
+        newChecked = []
+        checkedChecks.forEach(v=> {
+            newChecked.push(v.name)
+        })
+        console.log('oldChecked',oldChecked)
+        console.log('newChecked',newChecked)
+        var currList = [curProp1,curProp2]
+        console.log('currList',currList)
 
+        // need to find out which of the boxes is the newly checked box, and which curProp it should replace
+        const intersection = (currList, newChecked) => {
+            const s = new Set(newChecked);
+            return currList.filter(x => s.has(x))
+
+        }
+        var inBoth = intersection(currList, newChecked)
+        console.log('in both = ',inBoth,(inBoth.length == 0))
+        console.log('start of if statements')
+        // if only one map changes
+        if (newChecked.length == 2 && inBoth.length == 1){
+            console.log('newChecked.length == 2 && inBoth.length == 1')
+            console.log('currList = ',currList)
+            var curProp = newChecked.filter(a => a !== inBoth[0])[0];
+            var removeVar = currList.filter(a => a !== inBoth[0])[0];
+            console.log('curProp = ',curProp)
+            console.log('removeVar = ',removeVar)
+            steadyMap = mapPropDict[inBoth[0]]
+            console.log('steadyMap = ',steadyMap)
+            // console.log('stedyMap = ',steadyMap)
+            updateOneCheck(steadyMap, curProp, removeVar);
+        }
+        // if both unchecked/are different
+        if (newChecked.length == 2 && inBoth.length == 0){
+            console.log('both unchecked')
+            var currList = [curProp1,curProp2]
+            console.log('currList',currList)
+            mapPropDict = {}
+            curProp1 = newChecked[0]
+            curProp2 = newChecked[1]
+            mapPropDict[curProp1] = 'map1'
+            mapPropDict[curProp2] = 'map2'
+            updateBothCheck()
+            }
+        console.log('end of createProposal')
+        console.log('END: in both = ',inBoth,(inBoth.length == 0))
+        }
+    
+       } // end of createProposal()
+
+// } //end of parent function
+
+function getNewData(map, curProp){
+    var mapid = map.boxZoom._container.id;
+    // clearGeojson(map2)
+    // getData(map2, curProp)
+    if ((curExpression=="choropleth") || (curExpression=="propSymbol")){
+        clearGeojson(map)
+    } else{
+        clearBar(mapid)
+    }
+    if (curExpression=="choropleth"){
+        getChoroData(map, curProp)
+    } 
+    else if(curExpression=="propSymbol"){
+        getPropData(map, curProp);
+    }
+    else {
+        getBarData(mapid, curProp)
+    }
+}
+
+function updateOneCheck(steadyMap, curProp, removeVar){
+    if (steadyMap == 'map1'){
+        map = map2;
+        mapid = "map2";
+        console.log('updating map2')
+    } else {
+        map = map1;
+        mapid = "map1";
+        console.log('updating map1')
+    };
+    getNewData(map, curProp);
+    console.log(map._controlContainer)
+
+    map._controlContainer.getElementsByClassName('title_class')[0].innerHTML = curProp + ' map'
+    console.log(curProp, curProp1, curProp2)
+    if (removeVar == curProp1){
+        curProp1 = curProp
+        console.log(mapid +' if = ',curProp, curProp1, curProp2)
+        delete mapPropDict[removeVar]
+        mapPropDict[curProp1] = mapid
+    }
+    if (removeVar == curProp2){
+        curProp2 = curProp
+        console.log(mapid + ' if = ',curProp, curProp1, curProp2)
+        delete mapPropDict[removeVar]
+        mapPropDict[curProp2] = mapid
+    }
+}
+
+function updateBothCheck(){
+    getNewData(map1, curProp1);
+    getNewData(map2, curProp2);
+    map1._controlContainer.getElementsByClassName('title_class')[0].innerHTML = curProp1 + ' map';
+    map2._controlContainer.getElementsByClassName('title_class')[0].innerHTML = curProp2 + ' map';
 }
 
 
@@ -142,7 +255,7 @@ function createMap(panel, curProp){
     // setTimeout(function () { map.invalidateSize() }, 50);
 
     //call getData function
-    getChoroData(map, curProp);
+    getNewData(map, curProp);
 
     createTitle(map, curProp); 
 
@@ -1064,12 +1177,12 @@ function createTitle(map, curProp){
     var TitleControl = L.Control.extend({
         onAdd: function (map) {
             // create the control container with a particular class name
-            var container = L.DomUtil.create("div", "title-container "+curProp);
+            var container = L.DomUtil.create("div", "title-container");
             // container.style.position = "absolute";
             // container.style.left = "100px";
 			
 			//specify the title content
-			var content = "<h3>" + curProp + " map</h3>";
+			var content = "<h3 class='title_class'>" + curProp + " map</h3>";
 			container.insertAdjacentHTML("beforeend", content)
 			
 			//disable click inside the container
@@ -1079,6 +1192,10 @@ function createTitle(map, curProp){
         }
     });
     map.addControl(new TitleControl());
+    // map._controlContainer.innerHTML = ''
+    // console.log('map._controlContainer',curProp,map._controlContainer.innerHTML)
+    // console.log("document.getElementById('title-container').textContent",map.getElementById('title-container leaflet-control'))
+    // console.log.getElementById("title-container leaflet-control"))
 }
 
 document.addEventListener("DOMContentLoaded",initialize)
