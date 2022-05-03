@@ -423,7 +423,6 @@ function changeExpression(map, newExpression){
 }
 
 function createChoropleth(json, map){
-    
     // add button for choropleth map
     var mapid = map.boxZoom._container.id;
     var layer = L.geoJson(json, {

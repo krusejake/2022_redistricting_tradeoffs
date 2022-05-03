@@ -65,9 +65,9 @@ label {
 }
 
 .title-container{
-    position: absolute;
+    position: relative;
     top: 0px;
-    left: -100px;
+    left: 100px;
 }
 
 /* .reexpress-control {
