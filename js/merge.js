@@ -55,13 +55,19 @@ var chartWidth = 360,
     translate = "translate(" + leftPadding + "," + topBottomPadding + ")";
 
 // colormap global variables
-var n = 100;
-var width = 880,
-    height = 30,
+var n = 50;
+var colormapWidth = 880,
+    colormapHeight = 40,
     marginLeft = 15,
-    colormapElementWidth = (width - 2 * marginLeft)/n,
+    colormapElementWidth = (colormapWidth - 2 * marginLeft)/n,
     colormapElementHeight = 20,
     textHalfWidth = 12;
+
+// line legend global variable
+var lineLength = 20,
+    gap = 120,
+    legendWidth = 250,
+    legendHeight = 20;
 
 var minValue = extents[curAttribute][0],
     maxValue = extents[curAttribute][1];
@@ -159,6 +165,7 @@ function getNewData(map, curProp){
     } else{
         clearBar(mapid)
     }
+    clearPCP(mapid)
     if (curExpression=="choropleth"){
         getChoroData(map, curProp)
     } 
@@ -197,13 +204,16 @@ function updateOneCheck(steadyMap, curProp, removeVar){
         delete mapPropDict[removeVar]
         mapPropDict[curProp2] = mapid
     }
+    updateLineLegend();
 }
 
 function updateBothCheck(){
+    console.log("update both maps")
     getNewData(map1, curProp1);
     getNewData(map2, curProp2);
     map1._controlContainer.getElementsByClassName('title_class')[0].innerHTML = curProp1 + ' map';
     map2._controlContainer.getElementsByClassName('title_class')[0].innerHTML = curProp2 + ' map';
+    updateLineLegend();
 }
 
 
@@ -315,7 +325,7 @@ function getChoroData(map, curProp){
 function setColormap(){
     var breakPoints = []
     // console.log(breakPoints)
-    for (var i=0; i<100; i++){
+    for (var i=0; i<n; i++){
         breakPoints.push(minValue + (maxValue - minValue) / n * i)
     };
     // breakPoints.push(maxValue)
@@ -325,8 +335,8 @@ function setColormap(){
     var colormap = d3.select("#mapLegend")
         .append("svg")
         .attr("class", "legend")
-        .attr("width", width)
-        .attr("height", height)
+        .attr("width", colormapWidth)
+        .attr("height", colormapHeight)
         .selectAll(".legend")
         .data(breakPoints)
         .enter()
@@ -342,7 +352,10 @@ function setColormap(){
         })
         .attr("width", colormapElementWidth)
         .attr("height", colormapElementHeight)
-        .style("fill", function(d, i) { return colorScale(d); });
+        .style("fill", function(d, i) { return colorScale(d); })
+        // .style("stroke", function(d, i) { return colorScale(d); })
+        // .style("weight", "0.00001");
+
     console.log(colormap)
     colormap.append("text")
         .attr("class", "mono cmap")
@@ -350,10 +363,10 @@ function setColormap(){
             if (i==0){
                 return minValue.toFixed(2);
             }
-            if (i==50){
+            if (i==Number(n/2)){
                 return ((minValue + maxValue) / 2).toFixed(2);
             } 
-            if (i==99){
+            if (i==(n-1)){
                 return maxValue.toFixed(2);
             } 
              
@@ -362,14 +375,14 @@ function setColormap(){
             if (i==0){
                 return marginLeft - textHalfWidth;
             }
-            if (i==50){
+            if (i==Number(n/2)){
                 return 440 - textHalfWidth;
             } 
-            if (i==99){
+            if (i==(n-1)){
                 return 880 - marginLeft - textHalfWidth*2;
             } 
         })
-        .attr("y", 30);
+        .attr("y", 32);
 }
 
 
@@ -454,6 +467,13 @@ function clearBar(mapid){
     // d3.select(".chart-map1").remove();
 }
 
+function clearPCP(mapid){
+    var lineMap = d3.selectAll(".lines."+mapid)
+        .remove();
+    console.log('clear pcp', "."+mapid, lineMap)
+    // d3.select(".chart-map1").remove();
+}
+
 
 function getPropData(map, curProp){
     fetch("data/"+curProp+"_point.geojson")
@@ -477,10 +497,11 @@ function getPropData(map, curProp){
         // map.on('baselayerchange', function (e) {
         //     console.log(e.layer);
         // });
-        if (mapid=="map2"){
-            d3.selectAll('.propSymbol').append("desc")
-            .text('{"stroke": "#023858", "weight": "1", "fillOpacity": "1"}');
-        }
+        // if (mapid=="map2"){
+        d3.selectAll('.propSymbol'+'.'+mapid).append("desc")
+        .text('{"stroke": "#023858", "weight": "1", "fillOpacity": "1"}');
+        // }
+        createPCP(json, mapid);
     });
 
 
@@ -534,16 +555,16 @@ function createChoropleth(json, map){
             }
         }).addTo(map)
 
-    if (mapid=="map2"){
-        if (curExpression=="choropleth"){
-            d3.selectAll('.choropleth').append("desc")
-            .text('{"stroke": "#023858", "weight": "1", "fillOpacity": "1"}');
-        } else{
-            d3.selectAll('.choropleth').append("desc")
-            .text('{"stroke": "#023858", "weight": "1", "fillColor": "none", "fillOpacity": "1"}');
-        }
-
+    // if (mapid=="map2"){
+    if (curExpression=="choropleth"){
+        d3.selectAll('.choropleth.'+mapid).append("desc")
+        .text('{"stroke": "#023858", "weight": "1", "fillOpacity": "1"}');
+    } else{
+        d3.selectAll('.choropleth.'+mapid).append("desc")
+        .text('{"stroke": "#023858", "weight": "1", "fillColor": "none", "fillOpacity": "1"}');
     }
+
+    // }
 
     return layer
 };
@@ -568,13 +589,14 @@ function createPropSymbols(json, map){
 
     if (mapid=="map2"){
         createChoropleth(json2, map2)
-        d3.selectAll('.propSymbol').append("desc")
-        .text('{"stroke": "#023858", "weight": "1", "fillOpacity": "1"}');
-        resymbolize(curAttribute, true)
+        
     } else{
         // console.log(json1)
         var choroLayer = createChoropleth(json1, map1)
     }
+    resymbolize(curAttribute, true)
+    d3.selectAll('.propSymbol.'+mapid).append("desc")
+    .text('{"stroke": "#023858", "weight": "1", "fillOpacity": "1"}');
 
     
     return layer
@@ -587,7 +609,7 @@ function onEachFeature(feature, layer, map, expression) {
     districtid = feature.properties.assignment_0;
     // if (expression==curExpression){
     layer.setStyle({
-        className: "polygon "+ expression + " " + mapid +'-'+districtid
+        className: "polygon "+ expression + " " + mapid + ' ' + mapid +'-'+districtid
     });
     layer.on({
         mouseover: function(event){
@@ -680,6 +702,8 @@ function getBarData(mapid, curProp){
         // map.on('baselayerchange', function (e) {
         //     console.log(e.layer);
         // });
+        
+        createPCP(json, mapid);
     });
 
 
@@ -776,6 +800,7 @@ function createBar(json, mapid){
 }
 
 function createPCP(json, mapid){
+    console.log(mapid)
     if (mapid=="map1"){
         color = color1;
     } else{
@@ -832,7 +857,7 @@ function createPCP(json, mapid){
         .enter()
         .append("path")
         .attr("class", function(d){      
-            return "lines "  + mapid + '-' + d.properties.assignment_0;        
+            return "lines "  + mapid  + ' ' + mapid + '-' + d.properties.assignment_0;        
         })    
         .attr("id", function(d){
             return mapid + '-' + d.properties.assignment_0;
@@ -903,19 +928,11 @@ function createPCP(json, mapid){
 }
 
 function setLineLegend(){
-
-    var lineLength = 20,
-        gap = 80,
-        width = 200,
-        height = 20;
-    
-    var breakPoints = []
-
     var legend = d3.select("#pcpLegend")
         .append("svg")
         .attr("class", "legend")
-        .attr("width", width)
-        .attr("height", height)
+        .attr("width", legendWidth)
+        .attr("height", legendHeight)
         .selectAll(".legend")
         .data([curProp1, curProp2])
         .enter()
@@ -926,7 +943,7 @@ function setLineLegend(){
     legend.append("path")
         .attr("class", "colorLine")
         .attr("d", function(d, i){
-            return d3.line()([[marginLeft + gap*i, height/2], [marginLeft + gap*i + lineLength, height/2]]);
+            return d3.line()([[marginLeft + gap*i, legendHeight/2], [marginLeft + gap*i + lineLength, legendHeight/2]]);
         })
         .style("fill", "none")
         .style("stroke", function(d, i){
@@ -947,8 +964,8 @@ function setLineLegend(){
         .attr("x", function(d, i) { 
             return marginLeft + gap * i + lineLength + 10;
         })
-        .attr("y", height* 0.6);
-    }
+        .attr("y", legendHeight* 0.7);
+}
 
 
 //function to highlight enumeration units and bars
@@ -1170,11 +1187,26 @@ function updateColormap() {
         .duration(50);
 }
 
+function updateLineLegend() {
+    d3.selectAll(".linelegend")
+        .text(function(d, i) { 
+            if (i==0){
+                return curProp1;
+            } else{
+                return curProp2;
+            }
+            
+        })
+
+}
 
 //add the title to the map
 function createTitle(map, curProp){
 	//add a new control to the map to show the text content
     var TitleControl = L.Control.extend({
+        options: {
+            position: 'topleft'
+        },
         onAdd: function (map) {
             // create the control container with a particular class name
             var container = L.DomUtil.create("div", "title-container");
