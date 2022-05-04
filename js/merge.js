@@ -719,17 +719,17 @@ function getBarData(mapid, curProp){
 function createBar(json, mapid){
     //create a second svg element to hold the bar chart
     var chart = d3.select('.'+'chart-container-'+mapid)
-<<<<<<< HEAD:js/merge_0.js
-        // .append("svg")
-        // .attr("width", chartWidth)
-        // .attr("height", chartHeight)
-        // .attr("class", "chart-"+mapid);
-=======
-        .append("svg")
-        .attr("width", chartWidth)
-        .attr("height", chartHeight)
-        .attr("class", "chart-"+mapid);
->>>>>>> 5cb16c427c8b15c6a23f425202ac85983f19b749:js/merge.js
+// <<<<<<< HEAD:js/merge_0.js
+//         // .append("svg")
+//         // .attr("width", chartWidth)
+//         // .attr("height", chartHeight)
+//         // .attr("class", "chart-"+mapid);
+// =======
+//         .append("svg")
+//         .attr("width", chartWidth)
+//         .attr("height", chartHeight)
+//         .attr("class", "chart-"+mapid);
+// >>>>>>> 5cb16c427c8b15c6a23f425202ac85983f19b749:js/merge.js
     console.log('chart',chart)
     //create a rectangle for chart background fill
     var chartBackground = chart.append("rect")
