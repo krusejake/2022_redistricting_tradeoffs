@@ -1,6 +1,9 @@
 //declare map var in global scope
 var map1, map2, pcp;
-var attributes = ["population", "D_votes", "R_votes"]
+var attributes = ["population","PISLAND","White","Black","HISPANIC","Asian","AmIndian",
+                // "18+_Pop","PISLAND18","WHITE18","BLACK18","HISPANIC18","ASIAN18","AMINDIAN18",
+                "D_votes", "R_votes","D_percents","R_percents",
+                "intra_flows","inter_flows"]
 var proposals = ["current", "effGap", "compactness", "modularity", "pmc"] // the same as the checkbox class (cb-xx) and file names
 var curAttribute = attributes[0], // variable for symbolization
     curProp1 = "current" //proposals[0], // proposals to show on the map, left one
@@ -277,7 +280,8 @@ function getChoroData(map, curProp){
     //load the data
     // var geojson = new L.GeoJSON.AJAX("data/"+ curProp + ".geojson");
     // geojson.on("data:loaded", function() { 
-    // map.fitBounds(geojson.getBounds()); geojson.addTo(map); }.bind(this));
+    // map.fitBounds(geojson.getBounds()); 
+    // geojson.addTo(map).bind(this);
     
     fetch("data/"+curProp+".geojson")
         .then(function(response){
@@ -813,8 +817,9 @@ function createPCP(json, mapid){
 
     //chart frame dimensions
     var margin = { top: 20, right: 10, bottom: 20, left: 30 },
-        chartWidth = 550 - margin.left - margin.right,
+        chartWidth = 950 - margin.left - margin.right,
         chartHeight = 220 - margin.top - margin.bottom;
+        console.log('')
 
     // console.log(d3.select(".pcp")._groups[0][0]==null) 
     // if no pcp created, set PCP first
