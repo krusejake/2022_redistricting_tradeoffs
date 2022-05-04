@@ -22,9 +22,10 @@
              -->
         <div class="container-fluid">
             <div class="row">
+                <!-- <div id="space" class="col-lg-1"></div> -->
                 <!-- <div id="leftMargin" class="col-lg-1"> -->
                 <!-- </div> -->
-                <div id="proposalPanel" class="col-lg-3">
+                <div id="proposalPanel" class="col-lg-3 col-md-2" >
                     <p>Choose two maps to be displayed.</p>
                     <p>To choose a new map, uncheck a currently selected map and recheck a new map.</p>
                     <label><input type="checkbox" name="current" class="check" checked/> 2020 Enacted Map</label><br>
@@ -33,23 +34,30 @@
                     <label><input type="checkbox" name="modularity" class="check" /> Max Modularity Map</label><br>
                     <label><input type="checkbox" name="pmc" class="check" /> PMC Map</label><br>
                 </div> 
-                <div id="pcpPanel" class="col-lg-9">
+                
+                <div id="pcpPanel" class="col-lg-9 col-md-10">
                     <p>Choose one variable to symbolize the maps.</p>
+                    <!-- <div id="pcpLegend" style="width:100%; height:100%"></div> -->
+                    <!-- <div id="pcpLegend" style="width:30%; height:10%"></div> -->
                     <div id="pcpLegend"></div>
                     <div id="pcpPlot"></div>
                 </div>
+                <!-- <div id="space" class="col-lg-1 col-md-0"></div> -->
                 <!-- <div id="rightMargin" class="col-lg-1"> -->
                 <!-- </div> -->
             </div>
             <div class="row">
+                <div id="space" class="col-lg-1 col-md-0"></div>
                 <div id="mapLegend" class="col-lg"></div>
+                <div id="space" class="col-lg-1 col-md-0"></div>
             </div>
             <div class="row">
-                <div id="map1" class="col-lg">
+                <div id="space" class="col-lg-1 col-md-0"></div>
+                <div id="map1" class="col-lg" style="height:500px">
                     <div class="chart-container-map1" style="position:relative;;height: 100%; width: 100%;  right: -30%; bottom: -50%;z-index: 10000"></div>
 
                 </div>
-                <div id="map2" class="col-lg">
+                <div id="map2" class="col-lg" style="height:500px">
                     <div class="reexpress-control" style= "position:relative;  right: -80%; bottom: -80%; z-index:10000">
                         <button class="reexpress" id="choropleth"><img src="img/choroButton.png"></button>
                         <button class="reexpress" id="propSymbol"><img src="img/symbolButton.png"></button>
@@ -57,8 +65,12 @@
                     </div>
                     <div class="chart-container-map2" style="position:relative; height: 100%; width: 100%;  right: -80%; bottom: -50%;z-index: 10000"></div>
                 </div>
+                <div id="space" class="col-lg-1 col-md-0"></div>
             </div>
+        </div>
+        <div class="container-fluid"></div>
             <div class="row">
+                <div id="space" class="col-lg-1 col-md-0"></div>
                 <div id="overview" class="col-lg">
                     <h3>Overview</h3>
                     <p>This website is designed to help people understand how different goals of redistricting 
@@ -71,9 +83,10 @@
                         
                     </p>
                 </div>
-
+                <div id="space" class="col-lg-1 col-md-0"></div>
             </div>
             <div class="row">
+            <div id="space" class="col-lg-1 col-md-0"></div>
                 <div id="gerrymandering" class="col-lg" style='color:blue'>
                     <h3>Gerrymandering</h3>
                     <p style="color:black" style='text-align: justify;'>In representative democracies, gerrymandering the political manipulation 
@@ -98,6 +111,7 @@
 
                     </p>
                 </div>
+                <div id="space" class="col-lg-1 col-md-0"></div>
 
             </div>
         </div>
