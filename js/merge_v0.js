@@ -7,7 +7,7 @@ var curAttribute = attributes[0], // variable for symbolization
     curProp2 = "effGap" //proposals[1]; // right on, change default curProp1 and curProp2 to the "standard" ones on loading
 var oldChecked = [curProp1,curProp2];
 var propCount = 0; // at most 2 proposals can be chosen
-var zoomLevel = 10; // make sure two maps zoom in to the same level
+var zoomLevel = 5; // make sure two maps zoom in to the same level
 var json1, json2, pointJson1, pointJson2, prop1, prop2; // data files loaded
 var curExpression = "choropleth" //"choropleth"
 var color1 = "rgba(116,169,207, .8)", color2 = "rgba(252,141,89, .8)";
@@ -220,26 +220,26 @@ function updateBothCheck(){
 function createMap(panel, curProp){
     //create the map
     map = L.map(panel, {
-        center: [44.5,-89.5], // change to WI
-        zoom: 5, //larger number means you see more detail
+        center: [38.8610, 71.2761], // change to WI
+        zoom: 6,
         zoomControl: false
     });
 
     //add OSM base tilelayer
     var osm = L.tileLayer('https://{s}.tile.jawg.io/jawg-light/{z}/{x}/{y}{r}.png?access-token=fqi6cfeSKDgbxmTFln7Az50KH80kQ9XiendFp9kY5i3IR5yzHuAOqNSeNaF7DGxs', {
     attribution: '<a href="http://jawg.io" title="Tiles Courtesy of Jawg Maps" target="_blank">&copy; <b>Jawg</b>Maps</a> &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-    minZoom: 4,
+    minZoom: 6,
     maxZoom: 10,
     subdomains: "abcd",
     accessToken: "fqi6cfeSKDgbxmTFln7Az50KH80kQ9XiendFp9kY5i3IR5yzHuAOqNSeNaF7DGxs"
     }).addTo(map);
 
     // modify to limit to WI
-    var southWest = L.latLng(42, -90),
+    var southWest = L.latLng(43, -90),
     northEast = L.latLng(45, -89);
     var bounds = L.latLngBounds(southWest, northEast);
-    // map.fitBounds(bounds)
-    // map.setMaxBounds(bounds);
+
+    map.setMaxBounds(bounds);
     map.on("drag", function() {
         map.panInsideBounds(bounds, { animate: false });
     });
@@ -286,9 +286,7 @@ function getChoroData(map, curProp){
         .then(function(json){
             mapid = map.boxZoom._container.id
             // console.log("chart-container-"+mapid)
-            // document.querySelector(+mapid).style.display = 'none'; 
             document.querySelector(".chart-container-"+mapid).style.display = 'none'; 
-
             if (mapid=="map1"){
                 json1 = json
             } else{
@@ -556,7 +554,6 @@ function createChoropleth(json, map){
                 onEachFeature(feature, layer, map, "choropleth")
             }
         }).addTo(map)
-    map.fitBounds(layer.getBounds());
 
     // if (mapid=="map2"){
     if (curExpression=="choropleth"){
@@ -689,6 +686,7 @@ function getBarData(mapid, curProp){
         return response.json();
     })
     .then(function(json){
+        
         document.querySelector(".chart-container-"+mapid).style.display = 'block'; 
         if (mapid=="map1"){
             json1 = json
@@ -697,9 +695,8 @@ function getBarData(mapid, curProp){
         }
         
         //create an attributes array
-        console.log('getBarData json',json)
         var barLayer = createBar(json, mapid)
-        console.log('barLayer',barLayer)
+        // console.log(choroLayer)
         // addLayerControl(propLayer, choroLayer, attributes)
         // createPropLegend();
         // map.on('baselayerchange', function (e) {
@@ -719,19 +716,19 @@ function createBar(json, mapid){
         .attr("width", chartWidth)
         .attr("height", chartHeight)
         .attr("class", "chart-"+mapid);
-    console.log('chart',chart)
+
     //create a rectangle for chart background fill
     var chartBackground = chart.append("rect")
         .attr("class", "chartBackground")
         .attr("width", chartInnerWidth)
         .attr("height", chartInnerHeight)
         .attr("transform", translate);
-    console.log('chartBackground',chartBackground)
+
     //create a scale to size bars proportionally to frame and for axis
     var yScale = d3.scaleLinear()
         .range([chartInnerHeight, 0])
         .domain([minValue*0.95, maxValue*1.02]);
-    console.log('yScale',yScale)
+        
     //set bars for each district
     var bars = chart.selectAll(".bar")
         .data(json.features)
@@ -770,7 +767,7 @@ function createBar(json, mapid){
             id = event.target.id
             dehighlight('.' + id);
         });
-    console.log('bars',bars)
+
     // //create a text element for the chart title
     // var chartTitle = chart.append("text")
     //     .attr("x", 40)
@@ -781,13 +778,13 @@ function createBar(json, mapid){
     //create vertical axis generator
     var yAxis = d3.axisLeft()
         .scale(yScale);
-    console.log('yAxis',yAxis)
+
     //place axis
     var axis = chart.append("g")
         .attr("class", "barAxis")
         .attr("transform", translate)
         .call(yAxis);
-    console.log('axis',axis)
+
     //create frame for chart border
     var chartFrame = chart.append("rect")
         .attr("class", "chartFrame")
@@ -795,12 +792,11 @@ function createBar(json, mapid){
         .attr("height", chartInnerHeight)
         .attr("transform", translate);    
 
-    console.log('chartframe',chartFrame)
+
     
     //add style descriptor to each rect
     var desc = bars.append("desc")
                 .text('{"stroke": "#fff", "stroke-width": ".7px", "opcaity": ".7"}');
-    console.log('desc',desc)
 }
 
 function createPCP(json, mapid){
@@ -1214,7 +1210,6 @@ function createTitle(map, curProp){
         onAdd: function (map) {
             // create the control container with a particular class name
             var container = L.DomUtil.create("div", "title-container");
-            console.log('container',container)
             // container.style.position = "absolute";
             // container.style.left = "100px";
 			
