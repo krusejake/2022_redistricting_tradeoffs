@@ -168,3 +168,18 @@ button:enabled {
     font-size: 0.8em;
     fill: gray;
 }
+
+.paragaphText {
+    font-family: open sans-serif;
+    font-size: 20px;
+    fill: black;   
+}
+
+.aligncenter {
+    text-align: center;
+}
+
+.marginauto {
+    margin: 10px auto 20px;
+    display: block;
+}

@@ -72,9 +72,9 @@
             <div class="row">
                 <div id="space" class="col-lg-1 col-md-0"></div>
                 <div id="overview" class="col-lg">
-                    <h3>Overview</h3>
-                    <p>This website is designed to help people understand how different goals of redistricting 
-                        can be in tension with eachother. Here, we focus on two common redistricting criteria, comapctness
+                    <h2>Overview</h2>
+                    <p class='paragaphText'>This website is designed to help people understand how different goals of redistricting 
+                        can be in tension with each other. Here, we focus on two common redistricting criteria, compactness
                         and efficiency gap, while introducing a third criteria based on community flows, which we call 
                         modularity. <br>
 
@@ -87,9 +87,9 @@
             </div>
             <div class="row">
             <div id="space" class="col-lg-1 col-md-0"></div>
-                <div id="gerrymandering" class="col-lg" style='color:blue'>
-                    <h3>Gerrymandering</h3>
-                    <p style="color:black" style='text-align: justify;'>In representative democracies, gerrymandering the political manipulation 
+                <div id="gerrymandering" class="col-lg">
+                    <h2>Gerrymandering</h2>
+                    <p class='paragaphText' style='text-align: justify;'>In representative democracies, gerrymandering the political manipulation 
                         of electoral district boundaries with the intent of creating undue advantage 
                         for a party, group, or socio-economic class within the constituency. 
                         The manipulation may consist of "cracking" (diluting the voting power of the 
@@ -104,14 +104,71 @@
                          salamander. The term has negative connotations and gerrymandering is almost 
                          always considered a corruption of the democratic process. The resulting 
                          district is known as a gerrymander The word is also a verb for the process.
-
-                         https://en.wikipedia.org/wiki/Gerrymandering
-
-                         <img src="img/1280px-The_Gerry-Mander_Edit.png" width="300" height="300">
+                        
+                         <br>
+                         <p>Text and image are provided by Wikipedia:</p>
+                         <a href="url">https://en.wikipedia.org/wiki/Gerrymandering</a>
+                        <div class="row"></div>
+                        <br>
+                        <p class = 'text-center' >
+                            <img src="img/1280px-The_Gerry-Mander_Edit.png" width="400" height="400">
+                        </p>
+                        <div class="row"></div>
+                         
 
                     </p>
                 </div>
                 <div id="space" class="col-lg-1 col-md-0"></div>
+
+                <div class="row">
+                    <div id="space" class="col-lg-1 col-md-0"></div>
+                    <div id="Metrics" class="col-lg">
+                        <h2>Metrics</h2>
+                        <p class='paragaphText'>
+                        The following sections describe each metric and how they are calculated.
+                        </p>
+                    </div>
+                    <div id="space" class="col-lg-1 col-md-0"></div>
+                </div>
+
+                <div class="row">
+                    <div id="space" class="col-lg-1 col-md-0"></div>
+                    <div id="overview" class="col-lg">
+                        <h4>Modularity:</h4>
+                        <p class='paragaphText'> 
+                        A communitiy is a group of people that have more in common with each other, on average, than they do with
+                        people from another group. Redistricting groups people across geographic space, and therefore can either split
+                        communities or keep them intact.
+                        <br>
+                        Redistricting laws in many states have explicit preferences for redistricting plans that follow existing boundaries,
+                        such as county lines, which implicitly encourages communities to be kept intact. Frequently, in legal challenges
+                        to gerrymandered districts, split municipalities are shown as evidence that natural communities were split 
+                        in order to gain partisan advantage.
+                        <br>
+                        Communities of interest and majority-minority districts are two explicit ways of keeping particular communities intact,
+                        and both function by keeping groups of people with common policy concerns in a single district. For communities of interest,
+                        people from such a group self identify and advocate for being kept in a single interest so that they can elect a representative
+                        that will represent their particular interests. Majority-minority districts are similar, though they are required by the
+                        Voting Rights Act so as to not "improperly dilute minorities voting power."
+                        <br>
+                        None of these community formations, however, attempt to maintain communities across <i>all</i> districts. 
+                        Framed as an optimization problem, we might ask how we could make districts such that we maintain as many communities
+                        as possible within each district, such that we minimize community splitting across all districts. While optimization
+                        is redistricting is notoriously difficult, we attempt here to show at least what a range of possibilities might look like
+                        if such a metric were incorporated into redistricting law.
+                        <br>
+                        For such an optimization, we need both a formula for defining community strength, and a measurement to use in that formula.
+                        For the measurement, we employ human mobility flows from Safegraph. The mobility flows consist of anomymized cellphone counts 
+                        that have moved from one census block group to another during a given time span. To quantify community strength, we use 
+                        modularity, which is freqeuntly used in community detection research. Modularity here is defined as the sum of district intra flow
+                        divided by the sum of district inter flows, where intra flows are mobility flows originating in one district and ending in that same
+                        district, while inter flows are mobility flows originating in one district and ending in another. By summing across all districts
+                        to calculate modularity, we can get a sense of how the districting plan, as a whole, keeps communties intact.
+
+                        </p>
+                    </div>
+                    <div id="space" class="col-lg-1 col-md-0"></div>
+                </div>
 
             </div>
         </div>
