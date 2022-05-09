@@ -90,22 +90,6 @@
                 <div id="gerrymandering" class="col-lg">
                     <h2>Gerrymandering</h2>
                     <p class='paragaphText' style='text-align: justify;'>
-                        <!-- "In representative democracies, gerrymandering the political manipulation 
-                        of electoral district boundaries with the intent of creating undue advantage 
-                        for a party, group, or socio-economic class within the constituency. 
-                        The manipulation may consist of "cracking" (diluting the voting power of the 
-                        opposing party's supporters across many districts) or "packing" (concentrating 
-                        the opposing party's voting power in one district to reduce their voting power 
-                        in other districts)
-                        <br>
-                        <br>
-                        The term gerrymandering is named after American politician Elbridge Gerry,
-                        Vice President of the United States at the time of his death, who, as 
-                        Governor of Massachusetts in 1812, signed a bill that created a partisan
-                        district in the Boston area that was compared to the shape of a mythological 
-                        salamander. The term has negative connotations and gerrymandering is almost 
-                        always considered a corruption of the democratic process. The resulting 
-                        district is known as a gerrymander. The word is also a verb for the process." -->
                         In the United States, political districts are redrawn every 10 years to reflect new
                         Census data. When redrawing electoral district boundaries, legislators may try to
                         create districts so as to create an advantage for their party: this is gerrymandering.
@@ -120,9 +104,6 @@
                         agree that it is harmful for our democracy: if voters feel like their vote doesn't count, they
                         lose faith in our government.
                         <br>
-                    
-                        <!-- (<a href="https://en.wikipedia.org/wiki/Gerrymandering">https://en.wikipedia.org/wiki/Gerrymandering</a>) -->
-                        <!-- <div class="row"></div> -->
                         <br>
                         <p class = 'text-center' >
                             <img src="img/1280px-The_Gerry-Mander_Edit.png" width="400" height="400">
@@ -190,10 +171,11 @@
                         <br>
                         <p class= 'text-center'>
                             <img src="img/flows_equation.png" style = "width: 900px;height: auto;">
+                            <figcaption class = 'text-center'>Calculating modularity for the example districting plan.</figcaption>
                         </p>
-                        <p class="text-center">
-                            Calculating modularity for the example districting plan.
-                        </p>
+                        <!-- <p class="text-center"> -->
+                            
+                        <!-- </p> -->
                     </div>
                     <div id="space" class="col-lg-1 col-md-0"></div>
                 </div>
@@ -226,9 +208,10 @@
                                 receives 20/50 votes, yet is able to win 3/5 seats due to how the districts were arranged. 
                                 <p class="text-center">
                                     <img src="img/gerrymandering-1-600.jpg" style = "width: 700px;height: auto;">
+                                    <figcaption class = 'text-center'>An example state split into 5 districts, each with an equal population.</figcaption>
                                 </p>
-                                <p class="text-center" >
-                                An example state split into 5 districts, each with an equal population.
+                                <!-- <p class="text-center" > -->
+                                
                                 <br>
                                 Voters are shown as either voting for the Purple or the Green party.
                                 </p>
@@ -243,20 +226,27 @@
                                 </p>
                                 <p class="text-center">
                                     <img src="img/cropped.png" style = "width: 700px;height: auto;">
+                                    <figcaption class = 'text-center'>The districts are gerrymandered such that 
+                                        as many Purple votes as possible are wasted,<br> allowing Green to win a majority
+                                        of districts while winning a minority of the votes.</figcaption>
                                 </p>
-                                <p class="text-center">
+                                <!-- <p class="text-center">
                                     The districts are gerrymandered such that 
                                         as many Purple votes as possible are wasted,<br> allowing Green to win a majority
-                                        of districts while winning a minority of the votes.
+                                        of districts while winning a minority of the votes. -->
                                 </p>
                                 <p class="text-center">
-                                    <img src="img/eff_gap.jpg" style = "width: 700px;height: auto;">
+                                    <img src="img/Picture17.png" style = "width: 500px;height: auto;">
+                                    <figcaption class = 'text-center'>
+                                        The districts are gerrymandered such that 
+                                            as many Purple votes as possible are wasted,<br> allowing Green to win a majority
+                                            of districts while winning a minority of the votes.</figcaption>
                                 </p>
-                                <p class="text-center">
+                                <!-- <p class="text-center">
                                     The districts are gerrymandered such that 
                                         as many Purple votes as possible are wasted,<br> allowing Green to win a majority
-                                        of districts while winning a minority of the votes.
-                                </p>
+                                        of districts while winning a minority of the votes. -->
+                                <!-- </p> -->
                             </div>
                     <div id="space" class="col-lg-1 col-md-0"></div>
                 </div>
@@ -267,23 +257,23 @@
                     <div id="compactness" class="col-lg">
                         <h4>Compactness</h4>
                         <p class='paragaphText'>
-                        "Compactness refers to the principle that the constituents residing within an electoral 
-                        district should live as near to one another as possible. Compactness can be measured as 
-                        a ratio of the circumference of a district and its total area. Districts with higher 
-                        ratios are said to be less compact. Compact districts tend to resemble geometric shapes, 
-                        such as squares, with straight borders. Compactness can also refer to a shared culture 
-                        among the residents of a district, with compact districts being those in which most 
-                        residents share a common culture.
-                        <br><br>
-                        A total of 37 states require establish a compactness requirements for state legislative districts,
-                        and 18 establish similar requirements for congressional districts. These states have different 
-                        laws that regulate compactness. For example, Iowa requires that districts not be oddly shaped; 
-                        California requires districts not to bypass nearby populated areas in favor of more distant populated areas."    
+                        Compactness is metric that is used in redistricting to help guard against gerrymandering. Compactness
+                        can be defined geometrically in many ways, but the general idea in redistricting is to avoid long, odd shapes
+                        that demonstrate intent to unnaturally split communities in such as way as to crack and pack districts. For
+                        more specifics on compactness, you can refer to                   
                         <a href ="https://ballotpedia.org/Compactness">
-                        (https://ballotpedia.org/Compactness)
-                        </a>
+                        (ballotpedia)
+                        </a>.
+                        Here, we use the Polsby-Popper definition of compactness, which essentially compares
+                        the area and perimeter of a district. The range of values of this metric is from 0 to 1, where 0 is 
+                        the least compact and 1 is the most compact (the district is circular).
+                        </p>
+                        <p class = 'text-center' >
+                            <img src="img/pp.png"style = "width: 500px;height: auto;">
+                            <figcaption class = 'text-center'>Formula for Polsby-Popper compactness.</figcaption>
                         </p>
                     </div>
+                    
                     <div id="space" class="col-lg-1 col-md-0"></div>
                 </div>
 
