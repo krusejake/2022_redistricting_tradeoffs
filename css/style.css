@@ -245,7 +245,7 @@ button:enabled {
     margin: 0 0 0 -2px;
 } 
 
-.chart-container-map1 {
+/* .chart-container-map1 {
     float: left;
     width: 400px;
     height: 350px;
@@ -259,7 +259,7 @@ button:enabled {
     height: 350px;
     margin: 40px 0 0 20px;
     z-index: 5000;    
-}
+} */
 
 .leaflet-control-layers {
     width: 30px;
