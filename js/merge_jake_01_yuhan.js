@@ -42,20 +42,27 @@ var extents =  { 'population': [723, 750],
 
 var colorScale;
 var mapPropDict = {
-    'current':'map1',
-    'effGap':'map2'
+    curProp1:'map1',
+    curProp2:'map2'
 }
 var oldLayers = []
 
+//pcp frame dimensions
+var pcpMargin = { top: 20, right: 10, bottom: 20, left: 30 },
+    pcpWidth = document.querySelector("#pcpPlot").offsetWidth - pcpMargin.left - pcpMargin.right,
+    pcpHeight = document.querySelector("#pcpPlot").offsetHeight - pcpMargin.top - pcpMargin.bottom;
+    console.log('width', pcpWidth, 'height', pcpHeight)
+
 //chart global variables
-var chartWidth = document.querySelector("#map1").clientWidth,
-    chartHeight = document.querySelector("#map1").clientHeight,
+var chartWidth = document.querySelector("#map1").offsetWidth-20,
+    chartHeight = document.querySelector("#map1").offsetHeight-100,
     leftPadding = 50,
     rightPadding = 30,
-    topBottomPadding = 60,
+    topPadding = 60,
+    bottomPadding = 10,
     chartInnerWidth = chartWidth - leftPadding - rightPadding,
-    chartInnerHeight = chartHeight - topBottomPadding * 2,
-    translate = "translate(" + leftPadding + "," + topBottomPadding + ")";
+    chartInnerHeight = chartHeight - topPadding - bottomPadding,
+    translate = "translate(" + leftPadding + "," + topPadding + ")";
 
 console.log(chartWidth, chartHeight)
 // colormap global variables
@@ -447,6 +454,7 @@ function changeExpression(map, newExpression){
     else {
         getBarData(mapid, curProp)
     }
+    // getNewData(map, curProp);
 }
 
 function clearGeojson(map){
@@ -724,7 +732,9 @@ function createBar(json, mapid){
         .append("svg")
         .attr("width", chartWidth)
         .attr("height", chartHeight)
-        .attr("class", "chart-"+mapid);
+        .attr("class", "chart-"+mapid)
+        // .attr("transform", "translate(10, 10)");
+
     console.log('chart',chart)
     //create a rectangle for chart background fill
     var chartBackground = chart.append("rect")
@@ -761,7 +771,7 @@ function createBar(json, mapid){
             return chartHeight - yScale(d.properties[curAttribute]);
         })
         .attr("y", function(d, i){
-            return yScale(parseFloat(d.properties[curAttribute])) - topBottomPadding;
+            return yScale(parseFloat(d.properties[curAttribute])) - bottomPadding;
         })
         .style("fill", function(d){
             return colorScale(d.properties[curAttribute]);
@@ -817,11 +827,6 @@ function createPCP(json, mapid){
         color = color2;
     }
 
-    //chart frame dimensions
-    var margin = { top: 20, right: 10, bottom: 20, left: 30 },
-        chartWidth = 950 - margin.left - margin.right,
-        chartHeight = 220 - margin.top - margin.bottom;
-        console.log('')
 
     // console.log(d3.select(".pcp")._groups[0][0]==null) 
     // if no pcp created, set PCP first
@@ -829,11 +834,11 @@ function createPCP(json, mapid){
         //create a second svg element to hold the histogram
         var chart = d3.select("#pcpPlot")
             .append("svg")
-            .attr("width", chartWidth + margin.left + margin.right)
-            .attr("height", chartHeight + margin.top + margin.bottom)
+            .attr("width", pcpWidth + pcpMargin.left + pcpMargin.right)
+            .attr("height", pcpHeight + pcpMargin.top + pcpMargin.bottom)
             .append("g")
             .attr("class", "pcp")
-            .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+            .attr("transform", "translate(" + pcpMargin.left + "," + pcpMargin.top + ")");
     } else{
         var chart = d3.select(".pcp")
     }
@@ -848,12 +853,12 @@ function createPCP(json, mapid){
         //     console.log(d)
         //     return +d.properties[attr]; 
         // }) )
-        .range([chartHeight, 0])
+        .range([pcpHeight, 0])
     }
 
       // Build the X scale -> it find the best position for each Y axis
     var x = d3.scalePoint()
-        .range([0, chartWidth-10])
+        .range([0, pcpWidth-10])
         .padding(0.1)
         .domain(attributes);
     
@@ -1134,7 +1139,7 @@ function updateChart(mapid, n){
         return chartHeight - yScale(d.properties[curAttribute]);
     })
     .attr("y", function(d, i){
-        return yScale(parseFloat(d.properties[curAttribute])) + topBottomPadding;
+        return yScale(parseFloat(d.properties[curAttribute])) + bottomPadding;
     })
     .style("fill", function(d){
         return colorScale(d.properties[curAttribute]);
