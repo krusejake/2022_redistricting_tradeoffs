@@ -234,11 +234,20 @@ function createMap(panel, curProp){
     }
     //load the data
     var myStyle = {
-        "color": "#ff7800",
-        "weight": 5,
+        "color": "orange",
+        // "weight": 5,
         "opacity": 0.65
     };
-    var texture = new L.GeoJSON.AJAX("data/"+ "texture_demo" + ".geojson", style= myStyle);
+    // var texture = new L.GeoJSON.AJAX("data/"+ "texture_demo" + ".geojson", style= myStyle);
+    var texture = new L.GeoJSON.AJAX("data/"+ "test_overlay_dissolve" + ".geojson", style= myStyle);
+
+
+    var myStyleBoundary = {
+        "color": "Gray",
+        "weight": 10,
+        "opacity": 1.00
+    };
+    var pmc_outline = new L.GeoJSON.AJAX("data/"+ "pmc_outline" + ".geojson", style=myStyleBoundary);
     // texture.on("data:loaded", function() { 
     // map.fitBounds(geojson.getBounds()); 
     // texture.addTo(map)
@@ -251,6 +260,7 @@ function createMap(panel, curProp){
     var overlayers = {
         "OSM": osm,
         "Texture": texture,
+        'PMC Boundary':pmc_outline
         // "Landslide": ls
     }
   
@@ -981,7 +991,6 @@ function highlight(className){
 
 //function to reset the element style on mouseout
 function dehighlight(className){
-    // console.log(props)
     var selected = d3.selectAll(className)
         .style("stroke", function(){
             return getStyle(this, "stroke")
@@ -989,6 +998,7 @@ function dehighlight(className){
         .style("stroke-width", function(){
             return getStyle(this, "stroke-width")
         });
+        // .bringToBack();
         
 
     function getStyle(element, styleName){
