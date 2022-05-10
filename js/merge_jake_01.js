@@ -78,6 +78,13 @@ var minValue = extents[curAttribute][0],
 //create a scale to size bars proportionally to frame and for axis
 var yScale;
 
+// $('input:checkbox').on('change', function(evt) {
+//     if($(this).siblings(':checked').length >= 2) {
+//         this.checked = false;
+//         console.log(this.value)
+//     }
+//  });
+
 function initialize(){
     createProposal();
     colorScale = makeColorScale();
@@ -101,9 +108,18 @@ function createProposal(){ //Jake
     function selectiveCheck (event) {
         // get the checked boxes
         var checkedChecks = document.querySelectorAll(".check:checked");
+        var unCheckedChecks = document.querySelectorAll(".check:not(:checked)");
+        console.log('unCheckedChecks',unCheckedChecks)
         // don't let user check more than two boxes
+        if (unCheckedChecks.length == 3)
+            $(':checkbox:not(:checked)').attr('disabled', true);
+        if (unCheckedChecks.length > 3)
+            $(':checkbox:not(:checked)').attr('disabled', false);
         if (checkedChecks.length >= max + 1)
+            // $(':checkbox:not(:checked)').attr('disabled', false);
             return false;
+        // if (checkedChecks.length < max + 1)    
+        //     $(':checkbox:not(:checked)').attr('disabled', true);
         console.log('Current proposal vars: ',curProp1,curProp2)
         // if they haven't checked more than two (or else would have returned above),
         //       see if they checked a new box
