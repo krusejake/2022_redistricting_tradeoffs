@@ -207,8 +207,8 @@ function createMap(panel, curProp){
     //add OSM base tilelayer
     var osm = L.tileLayer('https://{s}.tile.jawg.io/jawg-light/{z}/{x}/{y}{r}.png?access-token=fqi6cfeSKDgbxmTFln7Az50KH80kQ9XiendFp9kY5i3IR5yzHuAOqNSeNaF7DGxs', {
     attribution: '<a href="http://jawg.io" title="Tiles Courtesy of Jawg Maps" target="_blank">&copy; <b>Jawg</b>Maps</a> &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-    minZoom: 4,
-    maxZoom: 10,
+    minZoom: 2,
+    maxZoom: 25,
     subdomains: "abcd",
     accessToken: "fqi6cfeSKDgbxmTFln7Az50KH80kQ9XiendFp9kY5i3IR5yzHuAOqNSeNaF7DGxs"
     }).addTo(map);
@@ -233,19 +233,24 @@ function createMap(panel, curProp){
         // "water color": watercolor,
     }
     //load the data
-    var myStyle = {
-        "color": "orange",
-        // "weight": 5,
-        "opacity": 0.65
-    };
+    // var myStyle = {
+    //     "color": "orange",
+    //     // "weight": 5,
+    //     "opacity": 0.65,
+    //     'interactive':false,
+    //     'pane':'shadowPane'
+    // };
     // var texture = new L.GeoJSON.AJAX("data/"+ "texture_demo" + ".geojson", style= myStyle);
-    var texture = new L.GeoJSON.AJAX("data/"+ "test_overlay_dissolve" + ".geojson", style= myStyle);
+    // var texture = new L.GeoJSON.AJAX("data/"+ "test_overlay_dissolve" + ".geojson",
+    //      style= myStyle);
 
 
     var myStyleBoundary = {
         "color": "Gray",
         "weight": 10,
-        "opacity": 1.00
+        "opacity": 1.00,
+        'interactive':false,
+        'pane':'shadowPane'
     };
     var pmc_outline = new L.GeoJSON.AJAX("data/"+ "pmc_outline" + ".geojson", style=myStyleBoundary);
     // texture.on("data:loaded", function() { 
@@ -259,7 +264,7 @@ function createMap(panel, curProp){
     // })
     var overlayers = {
         "OSM": osm,
-        "Texture": texture,
+        // "Texture": texture,
         'PMC Boundary':pmc_outline
         // "Landslide": ls
     }
