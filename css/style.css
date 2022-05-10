@@ -21,7 +21,7 @@ body {
     position: relative;
     /* left: 2%;
     right: 2%; */
-    /* overflow: hidden; */
+    overflow: hidden;
 }
 
 .container-fluid2 {

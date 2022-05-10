@@ -56,9 +56,9 @@ var pcpMargin = { top: 20, right: 10, bottom: 20, left: 30 },
 //chart global variables
 var chartWidth = document.querySelector("#map1").offsetWidth-20,
     chartHeight = document.querySelector("#map1").offsetHeight-100,
-    leftPadding = 50,
-    rightPadding = 30,
-    topPadding = 60,
+    leftPadding = 100,
+    rightPadding = 80,
+    topPadding = 80,
     bottomPadding = 10,
     chartInnerWidth = chartWidth - leftPadding - rightPadding,
     chartInnerHeight = chartHeight - topPadding - bottomPadding,
@@ -66,10 +66,11 @@ var chartWidth = document.querySelector("#map1").offsetWidth-20,
 
 console.log(chartWidth, chartHeight)
 // colormap global variables
-var n = 50;
-var colormapWidth = 880,
-    colormapHeight = 40,
+var n = 300;
+var colormapWidth = document.querySelector("#mapLegend").offsetWidth - 20,
+    colormapHeight = document.querySelector("#mapLegend").offsetHeight,
     marginLeft = 15,
+    marginTop = 5,
     colormapElementWidth = (colormapWidth - 2 * marginLeft)/n,
     colormapElementHeight = 20,
     textHalfWidth = 12;
@@ -361,7 +362,7 @@ function setColormap(){
     console.log(colormap)
     colormap.append("rect")
         .attr("class", "colormapRect")
-        .attr("y", 0)
+        .attr("y", marginTop)
         .attr("x", function(d, i){
             return colormapElementWidth * i + marginLeft;
         })
@@ -391,13 +392,13 @@ function setColormap(){
                 return marginLeft - textHalfWidth;
             }
             if (i==Number(n/2)){
-                return 440 - textHalfWidth;
+                return colormapWidth / 2 - textHalfWidth;
             } 
             if (i==(n-1)){
-                return 880 - marginLeft - textHalfWidth*2;
+                return colormapWidth - marginLeft - textHalfWidth*2;
             } 
         })
-        .attr("y", 32);
+        .attr("y", 0.9 * colormapHeight);
 }
 
 
@@ -687,7 +688,7 @@ function pointToLayer(feature, latlng){
 //calculate the radius of each proportional symbol
 function calcPropRadius(attrValue) {
     //constant factor adjusts symbol sizes evenly
-    var minRadius = 4;
+    var minRadius = 6;
     // minValue = extents[curAttribute][0],
     // maxValue = extents[curAttribute][1];
     // console.log(minValue, attrValue)
@@ -765,14 +766,15 @@ function createBar(json, mapid){
         .attr("width", chartInnerWidth / json.features.length - 1)
         .attr("x", function(d, i){
             // console.log(json.features.length)
-            return i * (chartInnerWidth / json.features.length) + leftPadding;
+            return i * (chartInnerWidth / json.features.length) //+ leftPadding;
         })
         .attr("height", function(d, i){
-            return chartHeight - yScale(d.properties[curAttribute]);
+            return chartInnerHeight - yScale(d.properties[curAttribute]);
         })
         .attr("y", function(d, i){
-            return yScale(parseFloat(d.properties[curAttribute])) - bottomPadding;
+            return yScale(parseFloat(d.properties[curAttribute])) //- bottomPadding;
         })
+        .attr("transform", translate)
         .style("fill", function(d){
             return colorScale(d.properties[curAttribute]);
         })
@@ -1160,7 +1162,7 @@ function updateChart(mapid, n){
 function updateColormap() {
     var breakPoints = []
     // console.log(breakPoints)
-    for (var i=0; i<100; i++){
+    for (var i=0; i<n; i++){
         breakPoints.push(minValue + (maxValue - minValue) / n * i)
     };
     console.log(breakPoints);
@@ -1179,10 +1181,10 @@ function updateColormap() {
             if (i==0){
                 return minValue.toFixed(2);
             }
-            if (i==50){
+            if (i==Number(n/2)){
                 return ((minValue + maxValue) / 2).toFixed(2);
             } 
-            if (i==99){
+            if (i==Number(n-1)){
                 return maxValue.toFixed(2);
             } 
         })
@@ -1190,11 +1192,11 @@ function updateColormap() {
             if (i==0){
                 return marginLeft - textHalfWidth;
             }
-            if (i==50){
-                return 440 - textHalfWidth;
+            if (i==Number(n/2)){
+                return colormapWidth - textHalfWidth;
             } 
-            if (i==99){
-                return 880 - marginLeft - textHalfWidth*2;
+            if (i==Number(n-1)){
+                return colormapWidth - marginLeft - textHalfWidth*2;
             } 
         })
         .transition() //add animation
