@@ -78,12 +78,21 @@ var minValue = extents[curAttribute][0],
 //create a scale to size bars proportionally to frame and for axis
 var yScale;
 
-// $('input:checkbox').on('change', function(evt) {
-//     if($(this).siblings(':checked').length >= 2) {
-//         this.checked = false;
-//         console.log(this.value)
-//     }
-//  });
+// $("#attr.PISLAND").tooltip({
+//     content : "Content overriding the title value"
+//     });
+
+console.log('.attr',document.getElementsByClassName('.attr'),document.getElementsByClassName('.attr.PISLAND'))
+
+// const headers = document.querySelectorAll('.attr');
+// console.log(headers)
+// headers.forEach(box => {
+//   box.addEventListener('click', function handleClick(event) {
+//     console.log('box clicked', event);
+//   });
+// });
+
+
 
 function initialize(){
     createProposal();
@@ -353,7 +362,7 @@ function setColormap(){
     };
     // breakPoints.push(maxValue)
     // console.log(breakPoints);
-    console.log(breakPoints);
+    // console.log(breakPoints);
 
     var colormap = d3.select("#mapLegend")
         .append("svg")
@@ -945,12 +954,35 @@ function createPCP(json, mapid){
                 resymbolize(d, true)
             }
             
-          })     
+          })
+        //   .on('mouseover', function(event, d) {
+        //     // console.log('block1')
+        //     curAttribute = d
+        //     console.log('block1,d',d)
+        //     const boxes = document.querySelectorAll(d);
+        //     console.log('boxes',boxes)
+            // d.on('mouseover', d.openPopup.bind(d));
+            // if (curExpression=="choropleth"){
+            //     console.log('block1')
+            // } else{
+            //     console.log('block2')
+            // }
+            
+        //   })          
     }
 
-
+    // const headers = document.querySelectorAll('.attr');
+    // console.log(headers)
     // console.log(d3.selectAll(".pcpAxis"))
-
+    // const boxes = document.querySelectorAll('.attr');
+    // console.log('boxes',boxes)
+    // for (const box of boxes) {
+    //     box.addEventListener('mouseover', function(event) {
+    //     console.log('box clicked', event);
+    //     console.log('left,top',box)
+    //     // box.setAttribute('style', 'background-color: salmon;');
+    //     });
+    // }
 }
 
 function setLineLegend(){
@@ -1060,14 +1092,14 @@ function resymbolize(newAttribute, transparent){ // Yuhan
         .range([chartInnerHeight, 0])
         .domain([minValue*0.95, maxValue*1.02]);
 
-    console.log(curExpression, transparent)
+    // console.log(curExpression, transparent)
 
 
     if (curExpression=="bar"){
         updateChart("map1", json1.features.length)
         updateChart("map2", json2.features.length)
     } else {
-        console.log(transparent)
+        // console.log(transparent)
         updateMapLayer(map1, transparent)
         updateMapLayer(map2, transparent)
     }
@@ -1173,7 +1205,7 @@ function updateColormap() {
     for (var i=0; i<100; i++){
         breakPoints.push(minValue + (maxValue - minValue) / n * i)
     };
-    console.log(breakPoints);
+    // console.log(breakPoints);
 
     d3.selectAll(".colormapRect")
         .style("fill", function(d, i) { return colorScale(breakPoints[i]); })
