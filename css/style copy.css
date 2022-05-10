@@ -1,0 +1,225 @@
+@import url("../lib/leaflet/leaflet.css");
+* {
+    margin:0;
+    padding:0;
+}
+
+body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    background-color: #FFCC00;
+}
+
+
+.leaflet-container {
+  width: 100%;
+  height: 100vh;
+}
+
+#header img {
+    float: left;
+    width: 70px;
+    height: 60px;
+    /* position: relative;
+    top: 5px;
+    left: 100px; */
+  }
+  
+ #header h1 {
+    /* position: relative;
+    top: 15px;
+    left: 120px; */
+    font-size: 1.5em;
+  }
+
+.container-fluid {
+    margin: 60px 0 0 0;
+    padding: 0;
+    width: 100vw;
+    min-height: 100vh;
+    overflow: hidden;
+}
+
+#nav, #content, #sidebar {
+	margin-bottom: -9999px;
+	padding-bottom: 9999px;
+}
+
+/* just to get panels visible for adjustment */
+#proposalPanel{
+    border-style: solid;
+    border-color: gray;
+}
+
+#pcpPanel{
+    border-style: solid;
+    border-color: gray;
+}
+
+#pcpLegend{
+    border-style: solid;
+    border-color: gray;
+}
+
+#pcpPlot{
+    border-style: solid;
+    border-color: gray;
+}
+
+#mapPanel{
+    border-style: solid;
+    border-color: gray;
+}
+
+#map1{
+    background-color: #fff;
+    border-style: solid;
+    border-color: gray;
+}
+
+#map2{
+    background-color: #fff;
+    border-style: solid;
+    border-color: gray;
+}
+
+#mapLegend{
+    border-style: solid;
+    border-color: gray;
+}
+
+p {
+    font-family: sans-serif;
+    font-size: .9em; 
+}
+
+label {
+    font-family: sans-serif;
+    font-size: .9em; 
+}
+
+.mono {
+    font-family: sans-serif;
+    font-size: .8em;
+}
+
+/* .title-container{
+    position: relative;
+    top: 0px;
+    left: 100px;
+} */
+
+/* .reexpress-control {
+    border-style: solid;
+    border-width: .2em;
+    border-color: lightgray;
+} */
+
+.reexpress {
+    background-color: #fff;
+    border-color: lightgray;
+    border-width: .2em;
+    opacity: .8;
+    width: 32px;
+    height: 32px;
+    
+}
+
+button:disabled {
+    background: #C3C3C3;
+    /* color : #C3C3C3; */
+}
+
+button:enabled {
+    background: #fff;
+    /* color : #C3C3C3; */
+}
+.reexpress img {  
+    
+    align-items: left;
+    width: 22px;  
+    height: 22px;  
+    margin: 0 0 0 -2px;
+} 
+
+.chart-container-map1 {
+    float: left;
+    width: 400px;
+    height: 350px;
+    margin: 40px 0 0 20px;
+    z-index: 5000;    
+}
+
+.chart-container-map2 {
+    float: left;
+    width: 400px;
+    height: 350px;
+    margin: 40px 0 0 20px;
+    z-index: 5000;    
+}
+
+.leaflet-control-layers {
+    width: 30px;
+    height: 30px;
+}
+
+.leaflet-touch .leaflet-control-layers-toggle {
+    width: 30px;
+    height: 30px;
+}
+
+.chart {
+    background-color: none;
+    border: none;
+    float: right;
+    margin: 100px 50px 0 0;
+    z-index: 500;
+}
+
+/* .chartTitle {
+    font-family: sans-serif;
+    font-size: 1.5em;
+    font-weight: bold;
+} */
+
+.chartBackground {
+    fill: none;
+}
+
+.chartFrame {
+    background-color: none;
+    fill: none;
+    stroke: lightgray;
+    stroke-width: 1.5px;
+    shape-rendering: crispEdges;
+}
+
+.axis path,
+.axis line {
+    fill: none;
+    stroke: gray;
+    stroke-width: 1px;
+    shape-rendering: crispEdges;
+}
+
+.axis text {
+    font-family: sans-serif;
+    font-size: 0.8em;
+    fill: gray;
+}
+
+.paragaphText {
+    font-family: open sans-serif;
+    font-size: 20px;
+    fill: black;   
+}
+
+.aligncenter {
+    text-align: center;
+}
+
+.marginauto {
+    margin: 10px auto 20px;
+    display: block;
+}

@@ -1,52 +1,190 @@
 @import url("../lib/leaflet/leaflet.css");
+@import url("../lib/cs");
+
+* {
+    margin:0;
+    padding:0;
+}
+
+body {
+    height: 100vh;
+    margin: 0;
+    padding: 0;
+    background-color: #FFCC00;
+}
+
+.container-fluid {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    min-height: 100vh;
+    position: relative;
+    /* left: 2%;
+    right: 2%; */
+    /* overflow: hidden; */
+}
+
+.container-fluid2 {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    min-height: 100vh;
+    position: relative;
+    /* left: 2%;
+    right: 2%; */
+    /* overflow: hidden; */
+}
+
 
 .leaflet-container {
   width: 100%;
   height: 100vh;
 }
 
+#brand img {
+    float: left;
+    width: 80px;
+    height: 60px;
+    padding: 0;
+  }
+  
+ #brand h1 {
+    font-size: 1.5em;
+    position: relative;
+    top: 20px;
+    left: 20px; 
+    align-items: center;
+    font-family: Verdana, sans-serif;
+    font-weight: 700;
+    color: #023858;
+    /* width: 50%; */
+  }
 
-/* just to get panels visible for adjustment */
-#proposalPanel{
-    border-style: solid;
-    border-color: gray;
+  #tutorial img {
+    float: left;
+    width: 40px;
+    height: 40px;
+    padding: 0;
+  }
+  
+
+
+/* #space {
+    width: 20px;
+} */
+
+#mapCheck {
+    font-family: Verdana, sans-serif;
+    font-weight: 500;
+    font-size: .9em;
+    color: #045a8d;
+    position: relative;
+    top: 10px;
+    left: 5%;
+    line-height: normal;
+}
+
+#checkboxGroup{
+    border: #74a9cf dotted;
+    border-radius: 15px;
+    position: relative;
+    top: 5px;
+    left: 5%;
+    height: 80%;
+    width: 95%;
+}
+
+.checkLabel {
+    font-family: Helvetica, sans-serif;
+    font-weight: 300;
+    font-size: .8em;
+    color: #000;
+    position: relative;
+    top: 10px;
+    left: 20px;
+    line-height: normal;    
+}
+
+.qMap {
+    width: 15px;
+    height: 15px;
+    position: relative;
+    left: 25px;
+    top: 10px;
+}
+
+#mapUncheck {
+    font-family: Helvetica, sans-serif;
+    font-weight: 200;
+    font-size: .8em;
+    color: #bdbdbd;
+    position: relative;
+    bottom: -20px;
+    left: 10px;
+    line-height: normal; 
 }
 
 #pcpPanel{
-    border-style: solid;
-    border-color: gray;
+    border: gray solid;
+}
+
+#attrSelection {
+    font-family: Verdana, sans-serif;
+    font-weight: 500;
+    font-size: .9em;
+    color: #045a8d;
+    position: relative;
+    top: 10px;
+    line-height: normal;
+    margin-right: 0;
+    border: gray solid;
+    width: 100%;
 }
 
 #pcpLegend{
-    border-style: solid;
-    border-color: gray;
+    border: gray solid;
+    height: 20px; 
+    position: relative; 
+    top: -2px; 
+    width: 100%;
+
 }
 
 #pcpPlot{
-    border-style: solid;
-    border-color: gray;
+    border: gray solid;
+    height: 170px; 
+    position: relative; 
+    top: -5px; 
+    width: 100%;
 }
 
-#mapPanel{
-    border-style: solid;
-    border-color: gray;
+#mapLegend{
+    border: gray solid;
+}
+
+
+#mapPanel1{
+    border: gray solid;
+    /* width: 100%; */
+    /* height: 100%; */
+    /* float: none; */
+}
+
+#mapPanel2{
+    border: gray solid;
+    /* width: 100%; */
+    /* height: 100%; */
+    /* float: none; */
 }
 
 #map1{
     background-color: #fff;
-    border-style: solid;
-    border-color: gray;
+    border: gray solid;
 }
 
 #map2{
     background-color: #fff;
-    border-style: solid;
-    border-color: gray;
-}
-
-#mapLegend{
-    border-style: solid;
-    border-color: gray;
+    border: gray solid;
 }
 
 p {
@@ -64,17 +202,6 @@ label {
     font-size: .8em;
 }
 
-/* .title-container{
-    position: relative;
-    top: 0px;
-    left: 100px;
-} */
-
-/* .reexpress-control {
-    border-style: solid;
-    border-width: .2em;
-    border-color: lightgray;
-} */
 
 .reexpress {
     background-color: #fff;
@@ -88,12 +215,10 @@ label {
 
 button:disabled {
     background: #C3C3C3;
-    /* color : #C3C3C3; */
 }
 
 button:enabled {
     background: #fff;
-    /* color : #C3C3C3; */
 }
 .reexpress img {  
     
@@ -137,12 +262,6 @@ button:enabled {
     z-index: 500;
 }
 
-/* .chartTitle {
-    font-family: sans-serif;
-    font-size: 1.5em;
-    font-weight: bold;
-} */
-
 .chartBackground {
     fill: none;
 }
@@ -182,4 +301,4 @@ button:enabled {
 .marginauto {
     margin: 10px auto 20px;
     display: block;
-}
+} 
