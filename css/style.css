@@ -34,16 +34,17 @@ body {
 
 #brand img {
     float: left;
-    width: 60px;
+    width: 50px;
     height: 40px;
-    padding: 0;
+    position: relative;
+    left: 20px; 
   }
   
  #brand h1 {
     font-size: 28px;
     position: relative;
     top: 5px;
-    left: 20px; 
+    left: 30px; 
     align-items: center;
     font-family: Verdana, sans-serif;
     font-weight: 700;

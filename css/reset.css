@@ -49,3 +49,38 @@ table {
 	border-collapse: collapse;
 	border-spacing: 0;
 }
+
+/* For Scroll top */
+#sttop {
+    position:relative;
+   }
+   #sttop #scrtop {
+    position:fixed;
+    top:80%;
+    right:1.1%;
+    width:1.8em;
+    cursor:pointer;
+    text-align:center;
+    font-family:Calibri, Arial, sans-serif;
+    line-height:1.4em;
+    font-size:.75em;
+    padding:0;
+    font-weight:800;
+    color:#042940;
+    border-bottom: 1.85em solid #a6bddb;
+    border-top: .78em solid #a6bddb;
+    border-left: 1em solid transparent;
+    border-right: 1em solid transparent;
+    height: 0;
+   }
+   #sttop #scrtop:hover {
+    border-color: #005C53;
+    color:#000100;
+   border-radius:1.1em;
+   }
+   #sttop #scrtop span {
+    display:block;
+    margin:-8px auto -1px auto;
+    font-size:1.9em;
+    color:#A62B1F;
+   }

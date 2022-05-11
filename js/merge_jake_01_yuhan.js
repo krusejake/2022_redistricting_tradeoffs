@@ -262,10 +262,12 @@ function createMap(panel, curProp){
     // map.on("drag", function() {
     //     map.panInsideBounds(bounds, { animate: false });
     // });
+    if (panel=="map2"){
+        L.control.zoom({
+            position: "bottomright"
+        }).addTo(map);
+    }
 
-    L.control.zoom({
-        position: "bottomright"
-    }).addTo(map);
 
     // add layer control
     var baselayer = {
