@@ -109,7 +109,13 @@ body {
     left: 25px;
     top: 10px;
 }
-
+.qMap2 {
+    width: 15px;
+    height: 15px;
+    position: relative;
+    left: 25px;
+    top: 10px;
+}
 /* #metric {
     float: left;
     position: relative;
