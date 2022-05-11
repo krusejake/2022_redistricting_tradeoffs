@@ -56,7 +56,13 @@
                     
                     <div id="pcpPanel" class="col-lg-9 col-md-9 d-flex flex-column align-content-start flex-wrap flex-grow-1">
                         <div class="d-flex align-items-stretch flex-row" style="height:40px;">
-                            <p id="attrSelection" class="col-lg-9 col-md-9 flex-grow-1">Choose one variable to symbolize the maps.</p>
+                            <p id="attrSelection" class="col-lg-9 col-md-9 flex-grow-1">Choose one variable to symbolize the maps.
+                                <a class="d-inline-block align-center" id="metric" href="#Metadata">
+                                    <img class="qMap2" src="img/questionmark.png" style></a><br>
+                            </p>
+                    
+                        </a>
+                            <!-- <a class="d-inline-block align-center" id="metric" href="#Metadata"><img class="qMap" src="img/questionmark.png"></a><br> -->
                             <div id="pcpLegend" class="col-lg-3 col-md-3 flex-grow-1"></div>
                         </div>
 
@@ -267,6 +273,90 @@
                         </p>
                     </div>
                     
+                </div>
+
+                <div class="row">
+                    <div id="Metadata" class="col-lg">
+                        <h4>Metadata</h4>
+                        <p class='paragaphText'>
+                        The following table describes the attributes used in the plots and interactive maps. Demographic and voting data was acquired from Maptitude.
+                        </p>
+                        <div class="row justify-content-center">
+                            <div class="col-auto"> 
+                            <style type="text/css">
+                                .tg  {border-collapse:collapse;border-spacing:0;}
+                                .tg td{border-color:black;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:14px;
+                                  overflow:hidden;padding:10px 5px;word-break:normal;}
+                                .tg th{border-color:black;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:14px;
+                                  font-weight:normal;overflow:hidden;padding:10px 5px;word-break:normal;}
+                                .tg .tg-fymr{border-color:inherit;font-weight:bold;text-align:left;vertical-align:top}
+                                .tg .tg-0pky{border-color:inherit;text-align:left;vertical-align:top}
+                                </style>
+                                <table class="tg">
+                                <thead>
+                                  <tr>
+                                    <th class="tg-fymr">Attribute</th>
+                                    <th class="tg-fymr">Description</th>
+                                  </tr>
+                                </thead>
+                                <tbody>
+                                  <tr>
+                                    <td class="tg-0pky">population</td>
+                                    <td class="tg-0pky">Total population count (all ages)</td>
+                                  </tr>
+                                  <tr>
+                                    <td class="tg-0pky">White</td>
+                                    <td class="tg-0pky">White population count</td>
+                                  </tr>
+                                  <tr>
+                                    <td class="tg-0pky">Black</td>
+                                    <td class="tg-0pky">Black population count</td>
+                                  </tr>
+                                  <tr>
+                                    <td class="tg-0pky">HISPANIC</td>
+                                    <td class="tg-0pky">Hispanic population count</td>
+                                  </tr>
+                                  <tr>
+                                    <td class="tg-0pky">Asian</td>
+                                    <td class="tg-0pky">Asian population count</td>
+                                  </tr>
+                                  <tr>
+                                    <td class="tg-0pky">AmIndian</td>
+                                    <td class="tg-0pky">American Indian population count</td>
+                                  </tr>
+                                  <tr>
+                                    <td class="tg-0pky">PISLAND</td>
+                                    <td class="tg-0pky">Pacific Islander population count</td>
+                                  </tr>
+                                  <tr>
+                                    <td class="tg-0pky">D_votes</td>
+                                    <td class="tg-0pky">Vote count for democratic candidate in the 2018 US House election</td>
+                                  </tr>
+                                  <tr>
+                                    <td class="tg-0pky">R_votes</td>
+                                    <td class="tg-0pky">Vote count for republican candidate in the 2018 US House election</td>
+                                  </tr>
+                                  <tr>
+                                    <td class="tg-0pky">D_percents</td>
+                                    <td class="tg-0pky">Percent of total votes won by democrat candidate in the 2018 US House election</td>
+                                  </tr>
+                                  <tr>
+                                    <td class="tg-0pky">R_percents</td>
+                                    <td class="tg-0pky">Percent of total votes won by republican candidate in the 2018 US House election</td>
+                                  </tr>
+                                  <tr>
+                                    <td class="tg-0pky">intra_flows</td>
+                                    <td class="tg-0pky">Total count of population-level mobility flows originating and ending in the same district</td>
+                                  </tr>
+                                  <tr>
+                                    <td class="tg-0pky">inter_flows</td>
+                                    <td class="tg-0pky">Total count of population-level mobility flows originating in one district and ending in another</td>
+                                  </tr>
+                                </tbody>
+                                </table>
+                            </div>
+                            </div>
+                    </div>
                 </div>
     
         </div>

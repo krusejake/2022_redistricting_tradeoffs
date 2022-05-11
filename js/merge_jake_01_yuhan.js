@@ -104,6 +104,7 @@ function initialize(){
     var legend = setLineLegend();
     map1.sync(map2);
     map2.sync(map1);
+
     
     reexpress()
 };
@@ -213,6 +214,7 @@ function updateOneCheck(steadyMap, curProp, removeVar){
     getNewData(map, curProp);
 
     map._controlContainer.getElementsByClassName('title_class')[0].innerHTML = curProp + ' map'
+    console.log('map._controlContainer',map._controlContainer)
     if (removeVar == curProp1){
         curProp1 = curProp
         delete mapPropDict[removeVar]
@@ -256,12 +258,12 @@ function createMap(panel, curProp){
     // modify to limit to WI
     var southWest = L.latLng(42, -90),
     northEast = L.latLng(45, -89);
-    var bounds = L.latLngBounds(southWest, northEast);
+    // var bounds = L.latLngBounds(southWest, northEast);
     // map.fitBounds(bounds)
     // map.setMaxBounds(bounds);
-    map.on("drag", function() {
-        map.panInsideBounds(bounds, { animate: false });
-    });
+    // map.on("drag", function() {
+    //     map.panInsideBounds(bounds, { animate: false });
+    // });
 
     L.control.zoom({
         position: "bottomright"
