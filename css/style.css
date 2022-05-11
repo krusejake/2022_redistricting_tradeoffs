@@ -217,7 +217,8 @@ body {
 
 #map1{
     background-color: #fff;
-    /* border: gray solid thin; */
+    /* border: gray solid; */
+    border: orange;
 }
 
 #map2{
