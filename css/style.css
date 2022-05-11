@@ -188,7 +188,8 @@ body {
 }
 
 #pcpPlot{
-    /* border: gray solid; */
+    border: gray solid;
+    border: white;
     /* height: 170px;  */
     position: relative; 
     /* top: -5px;  */

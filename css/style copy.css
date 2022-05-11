@@ -65,7 +65,8 @@ body {
     width: 20px;
 } */
 #proposalPanel {
-    border: gray solid;
+    /* border: gray solid; */
+    border: white
 }
 
 #mapCheck {
@@ -77,7 +78,8 @@ body {
     top: 10px;
     left: 20px;
     line-height: normal;
-    border: gray solid;
+    /* border: gray solid; */
+    border: white
     /* align-items: center; */
 }
 
@@ -157,7 +159,8 @@ body {
 }
 
 #pcpPanel{
-    border: gray solid;
+    /* border: gray solid; */
+    border: white
 }
 
 #attrSelection {
@@ -169,12 +172,14 @@ body {
     top: 10px;
     line-height: normal;
     margin-right: 0;
-    border: gray solid;
+    /* border: gray solid; */
+    border: white
     /* width: 100%; */
 }
 
 #pcpLegend{
-    border: gray solid;
+    /* border: gray solid; */
+    border: white;
     position: relative; 
     /* top: 10px;  */
     /* height: 100% */
@@ -184,7 +189,8 @@ body {
 
 #pcpPlot{
     border: gray solid;
-    /* height: 170px;  */
+    border: white;
+    height: 170px; 
     position: relative; 
     /* top: -5px;  */
     width: 100%;
@@ -195,7 +201,8 @@ body {
 }
 
 #mapLegend{
-    border: gray solid;
+    /* border: gray solid; */
+    border: white
 }
 
 
