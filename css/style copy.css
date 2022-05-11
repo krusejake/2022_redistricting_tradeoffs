@@ -109,6 +109,24 @@ body {
     left: 25px;
     top: 10px;
 }
+.qMap2 {
+    width: 15px;
+    height: 15px;
+    position: relative;
+    left: 15px;
+    top: 10px;
+}
+
+
+#metric2 img {
+    float: left;
+    width: 15px;
+    height: 15px;
+    position: relative;
+    top: 3px;
+    left: 2px;
+    padding: 0;
+  }
 
 /* #metric {
     float: left;

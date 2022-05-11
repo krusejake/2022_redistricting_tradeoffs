@@ -264,12 +264,10 @@ function createMap(panel, curProp){
     // map.on("drag", function() {
     //     map.panInsideBounds(bounds, { animate: false });
     // });
-    if (panel=="map2"){
-        L.control.zoom({
-            position: "bottomright"
-        }).addTo(map);
-    }
 
+    L.control.zoom({
+        position: "bottomright"
+    }).addTo(map);
 
     // add layer control
     var baselayer = {
@@ -290,11 +288,12 @@ function createMap(panel, curProp){
 
 
     var myStyleBoundary = {
-        "color": "Gray",
-        "weight": 10,
+        "color": '#fd5800',
+        "weight": 3,
         "opacity": 1.00,
         'interactive':false,
-        'pane':'shadowPane'
+        'pane':'shadowPane',
+        'dashArray': '10, 15' //first is dash length, second is dash space
     };
     var pmc_outline = new L.GeoJSON.AJAX("data/"+ "pmc_outline" + ".geojson", style=myStyleBoundary);
     // texture.on("data:loaded", function() { 
