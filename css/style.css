@@ -1,5 +1,5 @@
 @import url("../lib/leaflet/leaflet.css");
-@import url("../lib/cs");
+
 
 * {
     margin:0;
@@ -13,7 +13,7 @@ body {
    /* background-color: #FFCC00; */
 }
 
-.container-fluid {
+#container1 {
     margin: 0;
     padding: 0;
     width: 100%;
@@ -22,17 +22,8 @@ body {
     /* left: 2%;
     right: 2%; */
     /* overflow: hidden; */
-}
-
-.container-fluid2 {
-    margin: 0;
-    padding: 0;
-    width: 100%;
-    min-height: 100vh;
-    position: relative;
-    /* left: 2%;
-    right: 2%; */
-    /* overflow: hidden; */
+    overflow-x: hidden;
+    overflow-y: hidden;
 }
 
 
@@ -284,11 +275,14 @@ button:enabled {
 }
 
 .paragaphText {
-    font-family: Verdana, sans-serif;
+    font-family: Helvetica, sans-serif;
     font-size: 14px;
     fill: black;   
     position: relative;
-    left: 20px;
+    left: 2%;
+    right: 2%;
+    width: 95%;
+    text-align: justify;
 }
 
 .aligncenter {
