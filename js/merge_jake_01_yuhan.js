@@ -1,12 +1,12 @@
 //declare map var in global scope
 var map1, map2, pcp;
-var attributes = ["population","PISLAND","White","Black","HISPANIC","Asian","AmIndian",
+var attributes = ["population","White","Black","HISPANIC","Asian","AmIndian",//"PISLAND",
                 // "18+_Pop","PISLAND18","WHITE18","BLACK18","HISPANIC18","ASIAN18","AMINDIAN18",
                 "D_votes", "R_votes","D_percents","R_percents",
                 "intra_flows","inter_flows"]
 var proposals = ["current", "effGap", "compactness", "modularity", "pmc"] // the same as the checkbox class (cb-xx) and file names
 var curAttribute = attributes[0], // variable for symbolization
-    curProp1 = "current" //proposals[0], // proposals to show on the map, left one
+    curProp1 = "current", //proposals[0], // proposals to show on the map, left one
     curProp2 = "effGap" //proposals[1]; // right on, change default curProp1 and curProp2 to the "standard" ones on loading
 var oldChecked = [curProp1,curProp2];
 var propCount = 0; // at most 2 proposals can be chosen
@@ -40,15 +40,21 @@ var extents =  { 'population': [723, 750],
             'inter_flows': [1.93, 5.54],
                 }
 
+var colorClasses = [
+    "rgba(241,238,246,.7)",
+    "rgba(4,90,141,.7)",
+];
+
 var colorScale;
 var mapPropDict = {
-    curProp1:'map1',
-    curProp2:'map2'
+    'current':'map1',
+    'effGap':'map2'
 }
+console.log("mapPropDict", mapPropDict)
 var oldLayers = []
 
 //pcp frame dimensions
-var pcpMargin = { top: 20, right: 10, bottom: 20, left: 30 },
+var pcpMargin = { top: 20, right: 20, bottom: 5, left: 40 },
     pcpWidth = document.querySelector("#pcpPlot").offsetWidth - pcpMargin.left - pcpMargin.right,
     pcpHeight = document.querySelector("#pcpPlot").offsetHeight - pcpMargin.top - pcpMargin.bottom;
     console.log('width', pcpWidth, 'height', pcpHeight)
@@ -64,22 +70,24 @@ var chartWidth = document.querySelector("#map1").offsetWidth-20,
     chartInnerHeight = chartHeight - topPadding - bottomPadding,
     translate = "translate(" + leftPadding + "," + topPadding + ")";
 
-console.log(chartWidth, chartHeight)
+console.log("barchart", chartWidth, chartHeight)
 // colormap global variables
-var n = 300;
-var colormapWidth = document.querySelector("#mapLegend").offsetWidth - 20,
+var n = 2;
+var colormapWidth = document.querySelector("#mapLegend").offsetWidth - 40,
     colormapHeight = document.querySelector("#mapLegend").offsetHeight,
     marginLeft = 15,
-    marginTop = 5,
-    colormapElementWidth = (colormapWidth - 2 * marginLeft)/n,
+    marginTop = 7,
+    colormapElementWidth = (colormapWidth - 2 * marginLeft),
     colormapElementHeight = 20,
     textHalfWidth = 12;
 
+console.log("colormap", colormapWidth, colormapHeight)    
+
 // line legend global variable
 var lineLength = 20,
-    gap = 120,
-    legendWidth = 250,
-    legendHeight = 20;
+    legendWidth = document.querySelector("#pcpLegend").offsetWidth - 10,
+    legendHeight = document.querySelector("#pcpLegend").offsetHeight,
+    gap = legendWidth / 2 - 10;
 
 var minValue = extents[curAttribute][0],
     maxValue = extents[curAttribute][1];
@@ -94,6 +102,8 @@ function initialize(){
     map2 = createMap("map2", curProp2);
     var colormap = setColormap();
     var legend = setLineLegend();
+    map1.sync(map2);
+    map2.sync(map1);
     
     reexpress()
 };
@@ -103,6 +113,7 @@ function createProposal(){ //Jake
     //only allow <=2 checkboxes to be checked at a time
     // need to coordinate check box and reexpression button
     var checks = document.querySelectorAll(".check");
+    uncheck();
     var max = 2;
     for (var i = 0; i < checks.length; i++)
         checks[i].onclick = selectiveCheck;
@@ -110,17 +121,25 @@ function createProposal(){ //Jake
     function selectiveCheck (event) {
         // get the checked boxes
         var checkedChecks = document.querySelectorAll(".check:checked");
+        // var unCheckedChecks = document.querySelectorAll(".check:not(:checked)");
+        // console.log('unCheckedChecks',unCheckedChecks)
+        // // don't let user check more than two boxes
+        // if (unCheckedChecks.length == 3)
+        //     $(':checkbox:not(:checked)').attr('disabled', true);
+        // if (unCheckedChecks.length > 3)
+        //     $(':checkbox:not(:checked)').attr('disabled', false);
         // don't let user check more than two boxes
         if (checkedChecks.length >= max + 1)
             return false;
-        console.log('Current proposal vars: ',curProp1,curProp2)
+        uncheck()
+        console.log('Current proposal vars: ',curProp1, curProp2)
         // if they haven't checked more than two (or else would have returned above),
         //       see if they checked a new box
         newChecked = []
         checkedChecks.forEach(v=> {
             newChecked.push(v.name)
         })
-        var currList = [curProp1,curProp2]
+        var currList = [curProp1, curProp2]
         // need to find out which of the boxes is the newly checked box, and which curProp it should replace
         const intersection = (currList, newChecked) => {
             const s = new Set(newChecked);
@@ -133,6 +152,7 @@ function createProposal(){ //Jake
             var curProp = newChecked.filter(a => a !== inBoth[0])[0];
             var removeVar = currList.filter(a => a !== inBoth[0])[0];
             steadyMap = mapPropDict[inBoth[0]]
+            console.log(curProp, removeVar, steadyMap, mapPropDict)
             updateOneCheck(steadyMap, curProp, removeVar);
         }
         // if both unchecked/are different
@@ -140,7 +160,7 @@ function createProposal(){ //Jake
             var currList = [curProp1,curProp2]
             mapPropDict = {}
             curProp1 = newChecked[0]
-            curProp2 = newChecked[1]
+            curProp2 = newChecked[0]
             mapPropDict[curProp1] = 'map1'
             mapPropDict[curProp2] = 'map2'
             updateBothCheck()
@@ -150,6 +170,16 @@ function createProposal(){ //Jake
        } // end of createProposal()
 
 // } //end of parent function
+
+function uncheck(){
+    var unCheckedChecks = document.querySelectorAll(".check:not(:checked)");
+    console.log('unCheckedChecks',unCheckedChecks)
+    // don't let user check more than two boxes
+    if (unCheckedChecks.length == 3)
+        $(':checkbox:not(:checked)').attr('disabled', true);
+    if (unCheckedChecks.length > 3)
+        $(':checkbox:not(:checked)').attr('disabled', false);
+}
 
 function getNewData(map, curProp){
     var mapid = map.boxZoom._container.id;
@@ -193,6 +223,7 @@ function updateOneCheck(steadyMap, curProp, removeVar){
         delete mapPropDict[removeVar]
         mapPropDict[curProp2] = mapid
     }
+    console.log(mapPropDict)
     updateLineLegend();
 }
 
@@ -344,62 +375,142 @@ function setColormap(){
     for (var i=0; i<n; i++){
         breakPoints.push(minValue + (maxValue - minValue) / n * i)
     };
-    // breakPoints.push(maxValue)
+    breakPoints.push(maxValue)
     // console.log(breakPoints);
     console.log(breakPoints);
 
     var colormap = d3.select("#mapLegend")
         .append("svg")
-        .attr("class", "legend")
+        .attr("class", "colormap")
         .attr("width", colormapWidth)
         .attr("height", colormapHeight)
-        .selectAll(".legend")
-        .data(breakPoints)
-        .enter()
-        .append("g")
-        .attr("class", "colormap");
+        // .selectAll(".legend")
+        // // .data(breakPoints)
+        // // .enter()
+        // .append("g")
+        // .attr("class", "colormap");
 
     console.log(colormap)
+    var grad = colormap.append('defs')
+        .append('linearGradient')
+        .attr('id', 'grad')
+        .attr('x1', '0%')
+        .attr('x2', '100%')
+        .attr('y1', '0%')
+        .attr('y2', '0%');
+  
+    grad.selectAll('stop')
+        .data(colorClasses)
+        .enter()
+        .append('stop')
+        .style('stop-color', function(d){ return d; })
+        .attr('offset', function(d,i){
+            return 100 * (i / (colorClasses.length - 1)) + '%';
+        })
+
     colormap.append("rect")
         .attr("class", "colormapRect")
         .attr("y", marginTop)
-        .attr("x", function(d, i){
-            return colormapElementWidth * i + marginLeft;
-        })
+        .attr("x", marginLeft)
         .attr("width", colormapElementWidth)
         .attr("height", colormapElementHeight)
-        .style("fill", function(d, i) { return colorScale(d); })
+        .style("fill", "url(#grad)")
         // .style("stroke", function(d, i) { return colorScale(d); })
         // .style("weight", "0.00001");
 
-    console.log(colormap)
-    colormap.append("text")
+    colormap.selectAll(".colormapLabel")
+        .data(breakPoints)
+        .enter()
+        .append("text")
         .attr("class", "mono cmap")
         .text(function(d, i) { 
             if (i==0){
                 return minValue.toFixed(2);
             }
-            if (i==Number(n/2)){
+            else if (i==1){
                 return ((minValue + maxValue) / 2).toFixed(2);
             } 
-            if (i==(n-1)){
+            else {
                 return maxValue.toFixed(2);
-            } 
+            }
              
         })
         .attr("x", function(d, i) { 
             if (i==0){
                 return marginLeft - textHalfWidth;
-            }
-            if (i==Number(n/2)){
-                return colormapWidth / 2 - textHalfWidth;
             } 
-            if (i==(n-1)){
+            else if (i==1) {
+                return colormapWidth / 2 - textHalfWidth;
+            }
+            else {
                 return colormapWidth - marginLeft - textHalfWidth*2;
             } 
         })
-        .attr("y", 0.9 * colormapHeight);
+        .attr("y", 0.92 * colormapHeight);
 }
+
+// function setColormap(){
+//     var breakPoints = []
+//     // console.log(breakPoints)
+//     for (var i=0; i<n; i++){
+//         breakPoints.push(minValue + (maxValue - minValue) / n * i)
+//     };
+//     // breakPoints.push(maxValue)
+//     // console.log(breakPoints);
+//     console.log(breakPoints);
+
+//     var colormap = d3.select("#mapLegend")
+//         .append("svg")
+//         .attr("class", "legend")
+//         .attr("width", colormapWidth)
+//         .attr("height", colormapHeight)
+//         .selectAll(".legend")
+//         .data(breakPoints)
+//         .enter()
+//         .append("g")
+//         .attr("class", "colormap");
+
+//     console.log(colormap)
+//     colormap.append("rect")
+//         .attr("class", "colormapRect")
+//         .attr("y", marginTop)
+//         .attr("x", function(d, i){
+//             return colormapElementWidth * i + marginLeft;
+//         })
+//         .attr("width", colormapElementWidth)
+//         .attr("height", colormapElementHeight)
+//         .style("fill", function(d, i) { return colorScale(d); })
+//         // .style("stroke", function(d, i) { return colorScale(d); })
+//         // .style("weight", "0.00001");
+
+//     console.log(colormap)
+//     colormap.append("text")
+//         .attr("class", "mono cmap")
+//         .text(function(d, i) { 
+//             if (i==0){
+//                 return minValue.toFixed(2);
+//             }
+//             if (i==Number(n/2)){
+//                 return ((minValue + maxValue) / 2).toFixed(2);
+//             } 
+//             if (i==(n-1)){
+//                 return maxValue.toFixed(2);
+//             } 
+             
+//         })
+//         .attr("x", function(d, i) { 
+//             if (i==0){
+//                 return marginLeft - textHalfWidth;
+//             }
+//             if (i==Number(n/2)){
+//                 return colormapWidth / 2 - textHalfWidth;
+//             } 
+//             if (i==(n-1)){
+//                 return colormapWidth - marginLeft - textHalfWidth*2;
+//             } 
+//         })
+//         .attr("y", 0.9 * colormapHeight);
+// }
 
 
 
@@ -526,10 +637,6 @@ function getPropData(map, curProp){
 
 //function to create color scale generator, based on global minmax of an attribute
 function makeColorScale(){
-    var colorClasses = [
-        "rgba(241,238,246,.7)",
-        "rgba(4,90,141,.7)",
-    ];
 
 
     //create color scale generator
@@ -921,7 +1028,7 @@ function createPCP(json, mapid){
         .attr("y", -9)
         .text(function(d) { return d; })
         .style("fill", "black")
-        .style("font-size", "12px")
+        .style("font-size", "14px")
         .style("font-weight", function(d){
             if (d==curAttribute){
                 return 900
@@ -982,7 +1089,7 @@ function setLineLegend(){
         .attr("x", function(d, i) { 
             return marginLeft + gap * i + lineLength + 10;
         })
-        .attr("y", legendHeight* 0.7);
+        .attr("y", legendHeight* 0.6);
 }
 
 
@@ -1056,8 +1163,8 @@ function resymbolize(newAttribute, transparent){ // Yuhan
 
 
     if (curExpression=="bar"){
-        updateChart("map1", json1.features.length)
-        updateChart("map2", json2.features.length)
+        updateBar("map1", json1.features.length)
+        updateBar("map2", json2.features.length)
     } else {
         console.log(transparent)
         updateMapLayer(map1, transparent)
@@ -1125,8 +1232,7 @@ function updatePropSymbols(layer){
     layer.setStyle(options);
 }
 
-
-function updateChart(mapid, n){
+function updateBar(mapid, n){
     // change color in barchart
     var bars = d3.select(".chart-"+mapid)
     .selectAll(".bar")
@@ -1135,14 +1241,16 @@ function updateChart(mapid, n){
     })
     .attr("width", chartInnerWidth / n - 1)
     .attr("x", function(d, i){
-        return i * (chartInnerWidth / n) + leftPadding;
+        // console.log(json.features.length)
+        return i * (chartInnerWidth / n) //+ leftPadding;
     })
     .attr("height", function(d, i){
-        return chartHeight - yScale(d.properties[curAttribute]);
+        return chartInnerHeight - yScale(d.properties[curAttribute]);
     })
     .attr("y", function(d, i){
-        return yScale(parseFloat(d.properties[curAttribute])) + bottomPadding;
+        return yScale(parseFloat(d.properties[curAttribute])) //- bottomPadding;
     })
+    .attr("transform", translate)
     .style("fill", function(d){
         return colorScale(d.properties[curAttribute]);
     })
@@ -1165,15 +1273,9 @@ function updateColormap() {
     for (var i=0; i<n; i++){
         breakPoints.push(minValue + (maxValue - minValue) / n * i)
     };
+    breakPoints.push(maxValue)
+    // console.log(breakPoints);
     console.log(breakPoints);
-
-    d3.selectAll(".colormapRect")
-        .style("fill", function(d, i) { return colorScale(breakPoints[i]); })
-        .transition() //add animation
-        .delay(function(d, i){
-            return i * 20
-        })
-        .duration(50);;
 
 
     d3.selectAll(".cmap")
@@ -1181,24 +1283,25 @@ function updateColormap() {
             if (i==0){
                 return minValue.toFixed(2);
             }
-            if (i==Number(n/2)){
+            else if (i==1){
                 return ((minValue + maxValue) / 2).toFixed(2);
             } 
-            if (i==Number(n-1)){
+            else {
                 return maxValue.toFixed(2);
-            } 
+            }
+            
         })
         .attr("x", function(d, i) { 
             if (i==0){
                 return marginLeft - textHalfWidth;
+            } 
+            else if (i==1) {
+                return colormapWidth / 2 - textHalfWidth;
             }
-            if (i==Number(n/2)){
-                return colormapWidth - textHalfWidth;
-            } 
-            if (i==Number(n-1)){
+            else {
                 return colormapWidth - marginLeft - textHalfWidth*2;
-            } 
-        })
+            }
+        }) 
         .transition() //add animation
         .delay(function(d, i){
             return i * 20

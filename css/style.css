@@ -21,7 +21,7 @@ body {
     position: relative;
     /* left: 2%;
     right: 2%; */
-    overflow: hidden;
+    /* overflow: hidden; */
 }
 
 .container-fluid2 {
@@ -43,15 +43,15 @@ body {
 
 #brand img {
     float: left;
-    width: 80px;
-    height: 60px;
+    width: 60px;
+    height: 40px;
     padding: 0;
   }
   
  #brand h1 {
-    font-size: 1.5em;
+    font-size: 28px;
     position: relative;
-    top: 20px;
+    top: 5px;
     left: 20px; 
     align-items: center;
     font-family: Verdana, sans-serif;
@@ -72,32 +72,37 @@ body {
 /* #space {
     width: 20px;
 } */
+#proposalPanel {
+    border: gray solid;
+}
 
 #mapCheck {
     font-family: Verdana, sans-serif;
-    font-weight: 500;
-    font-size: .9em;
+    font-weight: 600;
+    font-size: 14px;
     color: #045a8d;
     position: relative;
     top: 10px;
-    left: 5%;
+    left: 20px;
     line-height: normal;
+    border: gray solid;
+    /* align-items: center; */
 }
 
 #checkboxGroup{
     border: #74a9cf dotted;
     border-radius: 15px;
     position: relative;
-    top: 5px;
+    /* top: 5px; */
     left: 5%;
-    height: 80%;
+    /* height: 80%; */
     width: 95%;
 }
 
 .checkLabel {
     font-family: Helvetica, sans-serif;
-    font-weight: 300;
-    font-size: .8em;
+    font-weight: 500;
+    font-size: 14px;
     color: #000;
     position: relative;
     top: 10px;
@@ -147,32 +152,36 @@ body {
 
 #attrSelection {
     font-family: Verdana, sans-serif;
-    font-weight: 500;
-    font-size: .9em;
+    font-weight: 600;
+    font-size: 14px;
     color: #045a8d;
     position: relative;
     top: 10px;
     line-height: normal;
     margin-right: 0;
     border: gray solid;
-    width: 100%;
+    /* width: 100%; */
 }
 
 #pcpLegend{
     border: gray solid;
-    height: 20px; 
     position: relative; 
-    top: -2px; 
-    width: 100%;
+    /* top: 10px;  */
+    /* height: 100% */
+    /* width: 100%; */
 
 }
 
 #pcpPlot{
     border: gray solid;
-    height: 170px; 
+    /* height: 170px;  */
     position: relative; 
-    top: -5px; 
+    /* top: -5px;  */
     width: 100%;
+}
+
+.attr {
+    font-family: Helvetica, sans-serif;
 }
 
 #mapLegend{
@@ -198,19 +207,10 @@ body {
     border: gray solid;
 }
 
-p {
-    font-family: sans-serif;
-    font-size: .9em; 
-}
-
-label {
-    font-family: sans-serif;
-    font-size: .9em; 
-}
 
 .mono {
-    font-family: sans-serif;
-    font-size: .8em;
+    font-family: Helvetica, sans-serif;
+    font-size: 12px;
 }
 
 
@@ -239,7 +239,7 @@ button:enabled {
     margin: 0 0 0 -2px;
 } 
 
-.leaflet-control-layers {
+/* .leaflet-control-layers {
     width: 30px;
     height: 30px;
 }
@@ -247,7 +247,7 @@ button:enabled {
 .leaflet-touch .leaflet-control-layers-toggle {
     width: 30px;
     height: 30px;
-}
+} */
 
 .chart {
     background-color: none;
@@ -278,14 +278,14 @@ button:enabled {
 }
 
 .axis text {
-    font-family: sans-serif;
-    font-size: 0.8em;
+    font-family: Helvetica, sans-serif;
+    font-size: 10px;
     fill: gray;
 }
 
 .paragaphText {
-    font-family: open sans-serif;
-    font-size: 20px;
+    font-family: Verdana, sans-serif;
+    font-size: 14px;
     fill: black;   
 }
 
@@ -297,3 +297,16 @@ button:enabled {
     margin: 10px auto 20px;
     display: block;
 } 
+
+.title_class {
+    font-family: Helvetica, sans-serif;
+    font-size: 14px;
+    fill: #023858;
+    font-weight: 600;
+}
+
+h1, h2, h3, h4 {
+    font-family: Verdana, sans-serif;
+    font-weight: 600;
+}
+
