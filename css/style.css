@@ -34,10 +34,11 @@ body {
 
 #brand img {
     float: left;
-    width: 50px;
-    height: 40px;
+    width: 60px;
+    height: 50px;
     position: relative;
     left: 20px; 
+    top: -5px;
   }
   
  #brand h1 {
@@ -187,9 +188,7 @@ body {
 }
 
 #pcpPlot{
-    /* border: gray solid;
-     */
-     border: white;
+    /* border: gray solid; */
     /* height: 170px;  */
     position: relative; 
     /* top: -5px;  */
