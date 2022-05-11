@@ -185,9 +185,6 @@ function getNewData(map, curProp){
     var mapid = map.boxZoom._container.id;
     if ((curExpression=="choropleth") || (curExpression=="propSymbol")){
         clearGeojson(map)
-        if (curExpression=="propSymbol") {
-            clearSymbol();
-        }
     } else{
         clearBar(mapid)
     }
@@ -197,7 +194,6 @@ function getNewData(map, curProp){
     } 
     else if(curExpression=="propSymbol"){
         getPropData(map, curProp);
-
     }
     else {
         getBarData(mapid, curProp)
@@ -290,12 +286,11 @@ function createMap(panel, curProp){
 
 
     var myStyleBoundary = {
-        "color": '#fd5800',
-        "weight": 3,
+        "color": "Gray",
+        "weight": 10,
         "opacity": 1.00,
         'interactive':false,
-        'pane':'shadowPane',
-        'dashArray': '10, 15' //first is dash length, second is dash space
+        'pane':'shadowPane'
     };
     var pmc_outline = new L.GeoJSON.AJAX("data/"+ "pmc_outline" + ".geojson", style=myStyleBoundary);
     // texture.on("data:loaded", function() { 
@@ -555,9 +550,6 @@ function changeExpression(map, newExpression){
     // console.log(map)
     if ((curExpression=="choropleth") || (curExpression=="propSymbol")){
         clearGeojson(map)
-        // if (curExpression=="propSymbol") {
-        //     clearSymbol();
-        // }
     } else{
         clearBar(mapid)
     }
@@ -570,73 +562,12 @@ function changeExpression(map, newExpression){
     } 
     else if(newExpression=="propSymbol"){
         getPropData(map, curProp);
-        // if (mapid=="map1"){
-        //     createPropLegend(map);
-        // }
-        
     }
     else {
         getBarData(mapid, curProp)
     }
     // getNewData(map, curProp);
 }
-
-//.function to create the legend
-function createPropLegend(map){
-    var propLegendControl = L.Control.extend({
-        options: {
-            position: 'bottomleft'
-        },
-
-        onAdd: function () {
-            // create the control container with a particular class name
-            var container = L.DomUtil.create('div', 'legend-control-container');
-
-            // container.innerHTML = "<p class='propLegend'>Percent / %</p>";
-
-            var svg = '<svg id="attribute-legend" width="130px" height="60px">';
-            //array of circle names to base loop on  
-            // var circles = ["max", "mean", "min"]; 
-            var dataStats = [minValue, (minValue+maxValue)/2, maxValue]
-
-            //Step 2: loop to add each circle and text to svg string  
-            for (var i=0; i<dataStats.length; i++){  
-                var value = dataStats[dataStats.length-1-i]
-                //Step 3: assign the r and cy attributes  
-                var color = colorScale(value)
-                var radius = calcPropRadius(value);  
-                var cy = 40 - radius;  
-
-                console.log('symbol legend', value, radius)
-                // console.log(radius)
-                //circle string  
-                svg += '<circle class="legend-circle" ' + '" r="' + radius + '"cy="' + cy + '" fill="#fff" fill-opacity="1" stroke="#023858" cx="30"/>';  
-                        //evenly space out labels    
-                //circle string  
-                svg += '<circle class="legend-circle" ' + '" r="' + radius + '"cy="' + cy + '" fill="'+ color + '" fill-opacity="0.8" stroke="#023858" cx="30"/>';  
-                        //evenly space out labels            
-                var textY = i * 15 + 10;            
-                console.log('<circle class="legend-circle" id="' + '" r="' + radius + '"cy="' + cy + '" fill="'+ color + '" fill-opacity="0.8" stroke="#023858" cx="30"/>')
-                // //text string            
-                // svg += '<text id="circle-' + i + '-text" x="55" y="' + textY + '"-"' + value.toFixed(2) + '</text>';
-                svg += '<text id="circle-' + i + '-text" x="60" y="' + textY + '">' + value.toFixed(2) + '</text>';
-                console.log('<text id="circle-' + i + '-text" x="60" y="' + textY + '">' + value.toFixed(2) + '</text>')
-            };  
-
-            //close svg string  
-            svg += "</svg>"; 
-
-            //add attribute legend svg to container
-            container.insertAdjacentHTML('beforeend',svg);
-            return container;
-        }
-    });
-
-    map.addControl(new propLegendControl());
-
-    
-
-};
 
 function clearGeojson(map){
     {
@@ -661,11 +592,6 @@ function clearGeojson(map){
 
 function clearBar(mapid){
     d3.select(".chart-"+mapid).remove();
-    // d3.select(".chart-map1").remove();
-}
-
-function clearSymbol(){
-    d3.select("#attribute-legend").remove();
     // d3.select(".chart-map1").remove();
 }
 
@@ -874,8 +800,8 @@ function calcPropRadius(attrValue) {
     // maxValue = extents[curAttribute][1];
     // console.log(minValue, attrValue)
     //Flannery Apperance Compensation formula
-    var radius = 1.0083 * Math.pow(attrValue/minValue, 0.5715) * minRadius
-    //var radius = 1.0083 * Math.pow(1 + 4 * (attrValue-minValue)/(maxValue-minValue), 0.5715) * minRadius
+    var radius = 1.0083 * Math.pow(attrValue/minValue,0.5715) * minRadius
+    // var radius = 1.0083 * Math.pow(1 + 4 * (attrValue-minValue)/(maxValue-minValue), 0.5715) * minRadius
     // console.log(radius)
     return radius;
 };
@@ -897,7 +823,11 @@ function getBarData(mapid, curProp){
         console.log('getBarData json',json)
         var barLayer = createBar(json, mapid)
         console.log('barLayer',barLayer)
-
+        // addLayerControl(propLayer, choroLayer, attributes)
+        // createPropLegend();
+        // map.on('baselayerchange', function (e) {
+        //     console.log(e.layer);
+        // });
         
         createPCP(json, mapid);
     });
@@ -1207,10 +1137,6 @@ function dehighlight(className){
 };
 
 function resymbolize(newAttribute, transparent){ // Yuhan
-    // if (curExpression=="propSymbol"){
-    //     clearSymbol();
-    //     createPropLegend();
-    // }
     // change current attribute
     curAttribute = newAttribute
 
@@ -1244,10 +1170,9 @@ function resymbolize(newAttribute, transparent){ // Yuhan
         console.log(transparent)
         updateMapLayer(map1, transparent)
         updateMapLayer(map2, transparent)
-        
     }
 
-    
+    updateColormap()
 }
 
 
@@ -1397,8 +1322,6 @@ function updateLineLegend() {
         })
 
 }
-
-
 
 //add the title to the map
 function createTitle(map, curProp){

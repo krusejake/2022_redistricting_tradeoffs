@@ -800,7 +800,8 @@ function calcPropRadius(attrValue) {
     // maxValue = extents[curAttribute][1];
     // console.log(minValue, attrValue)
     //Flannery Apperance Compensation formula
-    var radius = 1.0083 * Math.pow(1 + 4 * (attrValue-minValue)/(maxValue-minValue), 0.5715) * minRadius
+    var radius = 1.0083 * Math.pow(attrValue/minValue,0.5715) * minRadius
+    // var radius = 1.0083 * Math.pow(1 + 4 * (attrValue-minValue)/(maxValue-minValue), 0.5715) * minRadius
     // console.log(radius)
     return radius;
 };
@@ -1166,7 +1167,7 @@ function resymbolize(newAttribute, transparent){ // Yuhan
         updateBar("map1", json1.features.length)
         updateBar("map2", json2.features.length)
     } else {
-        console.log(transparent)
+        console.log("transparent", transparent)
         updateMapLayer(map1, transparent)
         updateMapLayer(map2, transparent)
     }

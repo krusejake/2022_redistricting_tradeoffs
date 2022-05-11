@@ -217,12 +217,12 @@ body {
 
 #map1{
     background-color: #fff;
-    border: gray solid;
+    /* border: gray solid thin; */
 }
 
 #map2{
     background-color: #fff;
-    border: gray solid;
+    /* border: gray solid; */
 }
 
 
