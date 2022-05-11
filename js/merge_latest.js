@@ -247,15 +247,15 @@ function createMap(panel, curProp){
     //add OSM base tilelayer
     var osm = L.tileLayer('https://{s}.tile.jawg.io/jawg-light/{z}/{x}/{y}{r}.png?access-token=fqi6cfeSKDgbxmTFln7Az50KH80kQ9XiendFp9kY5i3IR5yzHuAOqNSeNaF7DGxs', {
     attribution: '<a href="http://jawg.io" title="Tiles Courtesy of Jawg Maps" target="_blank">&copy; <b>Jawg</b>Maps</a> &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-    minZoom: 2,
-    maxZoom: 25,
+    minZoom: 5,
+    maxZoom: 6,
     subdomains: "abcd",
     accessToken: "fqi6cfeSKDgbxmTFln7Az50KH80kQ9XiendFp9kY5i3IR5yzHuAOqNSeNaF7DGxs"
     }).addTo(map);
 
     // // modify to limit to WI
     // var southWest = L.latLng(42, -90),
-    //     northEast = L.latLng(45, -89);
+    // northEast = L.latLng(45, -89);
     // var bounds = L.latLngBounds(southWest, northEast);
     // // map.fitBounds(bounds)
     // // map.setMaxBounds(bounds);
@@ -313,7 +313,7 @@ function createMap(panel, curProp){
 
     // setTimeout(function () { map.invalidateSize() }, 50);
 
-    // call getData function
+    //call getData function
     getNewData(map, curProp);
 
     createTitle(map, curProp); 
