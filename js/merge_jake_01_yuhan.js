@@ -104,7 +104,6 @@ function initialize(){
     var legend = setLineLegend();
     map1.sync(map2);
     map2.sync(map1);
-
     
     reexpress()
 };
@@ -186,6 +185,9 @@ function getNewData(map, curProp){
     var mapid = map.boxZoom._container.id;
     if ((curExpression=="choropleth") || (curExpression=="propSymbol")){
         clearGeojson(map)
+        if (curExpression=="propSymbol") {
+            clearSymbol();
+        }
     } else{
         clearBar(mapid)
     }
@@ -195,6 +197,7 @@ function getNewData(map, curProp){
     } 
     else if(curExpression=="propSymbol"){
         getPropData(map, curProp);
+
     }
     else {
         getBarData(mapid, curProp)
@@ -214,7 +217,6 @@ function updateOneCheck(steadyMap, curProp, removeVar){
     getNewData(map, curProp);
 
     map._controlContainer.getElementsByClassName('title_class')[0].innerHTML = curProp + ' map'
-    console.log('map._controlContainer',map._controlContainer)
     if (removeVar == curProp1){
         curProp1 = curProp
         delete mapPropDict[removeVar]
@@ -554,6 +556,9 @@ function changeExpression(map, newExpression){
     // console.log(map)
     if ((curExpression=="choropleth") || (curExpression=="propSymbol")){
         clearGeojson(map)
+        if (curExpression=="propSymbol") {
+            clearSymbol();
+        }
     } else{
         clearBar(mapid)
     }
@@ -566,12 +571,69 @@ function changeExpression(map, newExpression){
     } 
     else if(newExpression=="propSymbol"){
         getPropData(map, curProp);
+        if (mapid=="map1"){
+            createPropLegend(map);
+        }
+        
     }
     else {
         getBarData(mapid, curProp)
     }
     // getNewData(map, curProp);
 }
+
+//.function to create the legend
+function createPropLegend(map){
+    var propLegendControl = L.Control.extend({
+        options: {
+            position: 'bottomleft'
+        },
+
+        onAdd: function () {
+            // create the control container with a particular class name
+            var container = L.DomUtil.create('div', 'legend-control-container');
+
+            // container.innerHTML = "<p class='propLegend'>Percent / %</p>";
+
+            var svg = '<svg id="attribute-legend" width="130px" height="60px">';
+            //array of circle names to base loop on  
+            // var circles = ["max", "mean", "min"]; 
+            var dataStats = [minValue, (minValue+maxValue)/2, maxValue]
+
+            //Step 2: loop to add each circle and text to svg string  
+            for (var i=0; i<dataStats.length; i++){  
+                var value = dataStats[dataStats.length-1-i]
+                //Step 3: assign the r and cy attributes  
+                var color = colorScale(value)
+                var radius = calcPropRadius(value);  
+                var cy = 40 - radius;  
+                // console.log(radius)
+                //circle string  
+                svg += '<circle class="legend-circle" id="' + '" r="' + radius + '"cy="' + cy + '" fill="#fff" fill-opacity="1" stroke="#023858" cx="30"/>';  
+                        //evenly space out labels    
+                //circle string  
+                svg += '<circle class="legend-circle" id="' + '" r="' + radius + '"cy="' + cy + '" fill="'+ color + '" fill-opacity="0.8" stroke="#023858" cx="30"/>';  
+                        //evenly space out labels            
+                var textY = i * 15 + 10;            
+
+                //text string            
+                svg += '<text id="circle ' + i + '-text" x="55" y="' + textY + '">' + Math.round(value) + '</text>';
+            };  
+
+            //close svg string  
+            svg += "</svg>"; 
+
+            //add attribute legend svg to container
+            container.insertAdjacentHTML('beforeend',svg);
+            return container;
+        }
+    });
+
+    map.addControl(new propLegendControl());
+
+    
+
+};
 
 function clearGeojson(map){
     {
@@ -596,6 +658,11 @@ function clearGeojson(map){
 
 function clearBar(mapid){
     d3.select(".chart-"+mapid).remove();
+    // d3.select(".chart-map1").remove();
+}
+
+function clearSymbol(){
+    d3.select("#attribute-legend").remove();
     // d3.select(".chart-map1").remove();
 }
 
