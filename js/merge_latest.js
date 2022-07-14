@@ -293,6 +293,15 @@ function createMap(panel, curProp){
         'pane':'shadowPane'
     };
     var pmc_outline = new L.GeoJSON.AJAX("data/"+ "pmc_outline" + ".geojson", style=myStyleBoundary);
+
+    var myStyleBoundaryCBG = {
+        "color": "Gray",
+        "weight": 1,
+        "opacity": 1.00,
+        'interactive':false,
+        'pane':'shadowPane'
+    };
+    var cbg_geometries = new L.GeoJSON.AJAX("data/"+ "wi_cbgs_2020_simplified10" + ".geojson", style=myStyleBoundaryCBG);
     // texture.on("data:loaded", function() { 
     // map.fitBounds(geojson.getBounds()); 
     // texture.addTo(map)
@@ -305,7 +314,9 @@ function createMap(panel, curProp){
     var overlayers = {
         "OSM": osm,
         // "Texture": texture,
-        'PMC Boundary':pmc_outline
+        'PMC Boundary':pmc_outline,
+        'CBGs':cbg_geometries
+
         // "Landslide": ls
     }
   
