@@ -84,7 +84,7 @@ body {
 }
 
 #checkboxGroup{
-    border: #74a9cf dotted;
+    /* border: #74a9cf dotted; */
     border-radius: 15px;
     position: relative;
     /* top: 5px; */
