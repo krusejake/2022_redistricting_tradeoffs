@@ -12,13 +12,69 @@
         <!--[if IE<9]>
             <link rel="stylesheet" href="css/style.ie.css">
         <![endif]-->
-
-         <!--you can also place internal styles here;
-             place these within <style> tags-->
-        
     </head>
 
     <body>
+        <div id="loading">
+            <div id="close"></div>
+            <p style="padding-top:-5px;"></p>
+
+            <div id="slideshow1" class="slideshow-container">
+
+                <div class="mySlides fade" id="s1">
+                    <h2>
+                        <b> Gerrymandering</b>
+                    </h2>
+                    <p class='paragaphText' style='text-align: justify;'>
+                        In the United States, political districts are redrawn every 10 years to reflect new
+                        Census data. When redrawing electoral district boundaries, legislators may try to
+                        create districts so as to create an advantage for their party: this is gerrymandering.
+                        <br>
+                        <p class = 'text-center' >
+                            <img src="img/1280px-The_Gerry-Mander_Edit.png" width="280px" height="280px">
+                            <figcaption class = 'text-center'>Drawing of the salamander-like district 
+                                shape that inspired the term 'gerrrymander'.</figcaption>
+                        </p>
+                    </p>
+                </div>
+
+                <div class="mySlides fade" id="s2">
+                    <h2>About this project</h2>
+                    <p class='paragaphText' style='text-align: justify;'>
+                        <b>Research questions</b>
+                        <br>
+                        Though political gerrymandering is legal and to some degree unavoidable, many scholars
+                        agree that it is harmful for our democracy: if voters feel like their vote doesn't count, they
+                        lose faith in our government.
+                        <br>
+                        <b>Data</b>
+                        <br>
+                        <p class = 'text-center' >
+                            <img src="img/OD_flow.png" width="300" height="240"> 
+                            <figcaption class = 'text-center'>Drawing of the salamander-like district 
+                                shape that inspired the term 'gerrrymander'.</figcaption>
+                        </p>
+                        <!-- <div class="row"></div> -->
+                            
+
+                    </p>
+                </div>
+                
+                <a class="prev" id="prev1">&#10094;</a>
+                <a class="next" id="next1">&#10095;</a>
+                
+                
+                <div style="text-align:center">
+                  <span class="dot" id="dot1"></span> 
+                  <span class="dot" id="dot2"></span> 
+                </div>
+            </div>
+
+
+        </div>    
+                
+                
+            
         <div class="container-fluid h-100 min-width-70" id="container1">
             <div class="row d-flex align-items-start justify-content-center align-content-stretch flex-column h-100 w-100">
 
@@ -76,11 +132,10 @@
                     <div class="row" style="height: 40px; width: 100%">
                         <div id="mapLegend" class="col-lg-12 col-md-12"></div>
                     </div>
-                    <div class="row flex-grow-1 d-flex align-items-stretch flex-row" style="height: 40px; width: 100%">
+                    <div class="row flex-grow-1 d-flex align-items-stretch flex-row" style="width: 100%">
                         <div id="mapPanel1" class="col-lg-6 col-md-6 flex-grow-1">
                             <div id="map1" style="width: 98%; height: 96%; position: relative; top: 2%; left: 1%">
                                 <div class="chart-container-map1" style="position:relative;;height: 100%; width: 100%; z-index: 10000; float: left"></div>
-                            </div>
                             </div>
                         </div>
                         
@@ -376,6 +431,6 @@
         <script type="text/javascript" src="lib/leaflet-choropleth-gh-pages/dist/choropleth.js"></script>
         <script type="text/javascript" src="lib/d3/dist/d3.js"></script>
         <script type="text/javascript" src="lib/bootstrap-5.1.3-dist/js/bootstrap.js"></script>
-        <script type="text/javascript" src="js/merge_latest.js"></script>
+        <script type="text/javascript" src="js/merge_yuhan.js"></script>
     </body>
 </html>
