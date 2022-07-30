@@ -96,19 +96,32 @@ var minValue = extents[curAttribute][0],
 var yScale;
 
 function initialize(){
-    introControl();
+    // introControl();
+    // introJs().start();
+    
 
     createProposal();
     colorScale = makeColorScale();
     map1 = createMap("map1", curProp1);
+    console.log("map1 created")
     map2 = createMap("map2", curProp2);
     var colormap = setColormap();
     var legend = setLineLegend();
     map1.sync(map2);
     map2.sync(map1);
-    
+    console.log("lines1", d3.selectAll('.pcpAxis'));
     reexpress()
+    // console.log("start intro")
+    startIntro();
+    // console.log("lines", d3.selectAll(".attr"));
 };
+
+// function test(){
+//     console.log("lines2", d3.selectAll(".attr"))
+// }
+
+
+
 
 function plusSlides(n) {
     console.log("plus", n)
@@ -431,7 +444,8 @@ function getChoroData(map, curProp){
 
             // create PCP plots and control Yuhan
             createPCP(json, mapid)
-            
+            console.log("pcp created")
+            console.log(d3.selectAll(".attr"))
 
             
             // create info label, only activate when cbgOn=1
@@ -1098,6 +1112,7 @@ function createPCP(json, mapid){
             d3.select(this).call(d3.axisLeft().scale(y[d])); })
         // Add axis title
         .append("text")
+        .attr("id", function(d){return d})
         .attr("class", function(d){return "attr " + d})
         .style("text-anchor", "middle")
         .attr("y", -9)
@@ -1122,8 +1137,8 @@ function createPCP(json, mapid){
           })     
     }
 
-
-    // console.log(d3.selectAll(".pcpAxis"))
+    console.log("add attr")
+    console.log(d3.select("."+attributes[7]))
 
 }
 
@@ -1426,6 +1441,90 @@ function createTitle(map, curProp){
     // console.log('map._controlContainer',curProp,map._controlContainer.innerHTML)
     // console.log("document.getElementById('title-container').textContent",map.getElementById('title-container leaflet-control'))
     // console.log.getElementById("title-container leaflet-control"))
+}
+
+
+function startIntro(){
+    console.log(d3.select('.attr'))
+    console.log('#'+attributes[7]);
+    introJs().setOptions({
+        steps: [{
+          title: 'Welcome',
+          intro: "In the United States, political districts are redrawn every 10 years to reflect new Census data. "
+          +"When redrawing electoral district boundaries, legislators may try to create districts so as to create "
+          +"an advantage for their party: this is gerrymandering.<br>"
+          +"<p class = 'text-center' ><img src='img/1280px-The_Gerry-Mander_Edit.png' width='280px' height='280px'>"
+          +"<figcaption class = 'text-center'>Drawing of the salamander-like district shape that inspired the term 'gerrrymander'.</figcaption></p>"
+        },{
+            title: 'About this project',
+            intro: "<b>Research questions</b>"
+            +"<br>Though political gerrymandering is legal and to some degree unavoidable, many scholars"
+            +"agree that it is harmful for our democracy: if voters feel like their vote doesn't count, they"
+            +"lose faith in our government.<br>"
+            +"<b>Data</b>"
+            +"<br><p class = 'text-center' >"
+            +"<img src='img/OD_flow.png' width='250' height='220'> "
+            +"<figcaption class = 'text-center'>Drawing of the salamander-like district shape that inspired the term 'gerrrymander'.</figcaption></p>"
+          },
+          {
+            element: document.querySelector('#tutorial'),
+            intro: 'Navigate to tutorial'
+          },
+        {
+          element: document.querySelector('#proposalPanel'),
+          intro: 'Uncheck a currently selected map and recheck a new map'
+        },
+        {
+            element: document.querySelector('.qMap'),
+            intro: 'Learn about the metric'
+          },
+        {
+            element: document.querySelector('#pcpPanel'),
+            intro: 'Choose one variable to symbolize the maps'
+        },
+        {
+            element: document.querySelector('.qMap2'),
+            intro: 'Learn about the attributes'
+        },
+        
+        {
+            
+            // element: document.querySelector('#'+attributes[7]),
+            intro: 'Click to change the attribute',
+            preChange: function(){
+                this.element = document.querySelector('#'+attributes[7]);
+              this.position = "top";
+            }
+            },
+        {
+            element: document.querySelector('#mapPanel'),
+            intro: 'Selected maps'
+        },
+        {
+            element: document.querySelector('.reexpress-control'),
+            intro: 'Reexpress'
+        },
+        {
+            element: document.querySelector('.leaflet-control-layers'),
+            intro: 'Overlay'
+        },
+        {
+            element: document.querySelector('.leaflet-control-zoom-in'),
+            intro: 'Zoom in and out'
+        },
+        {
+            element: document.querySelector('.leaflet-control-zoom-in'),
+            intro: 'Zoom in and out'
+        },
+    ],
+        exitOnOverlayClick: false
+      })
+      .onbeforechange(function(){
+        if (this._introItems[this._currentStep].preChange) {
+            this._introItems[this._currentStep].preChange();
+          }
+      })
+      .start();
 }
 
 document.addEventListener("DOMContentLoaded",initialize)
