@@ -3,7 +3,7 @@
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width">
-            <title></title>
+            <title>GeoDS - Interactive Redistricting Map</title>
 
         <!--put your external stylesheet links here-->
         <link rel="stylesheet" href="css/reset.css">
@@ -72,15 +72,14 @@
 
         </div>     -->
                 
-                
             
         <div class="container-fluid h-100 min-width-70" id="container1">
             <div class="row d-flex align-items-start justify-content-center align-content-stretch flex-column h-100 w-100">
 
                 <nav class="navbar navbar-light bg-light" id="header" style="height: 60px">
                     <a class="navbar-brand" id="brand" href="#">
-                        <img src="img/WI.png" class="d-inline-block align-top" alt="">
-                        <h1>Redistricting Laboratory</h1>
+                        <img src="img/geods_logo.png" class="d-inline-block align-top" alt="">
+                        <h1>GeoDS Lab @ UW-Madison</h1>
     
                     </a>
                     <a class="nav-link" id="tutorial" href="#gerrymandering"><img src="img/questionmark.png" class="d-inline-block align-top" alt="">
@@ -96,13 +95,13 @@
                         <div id="checkboxGroup" class="flex-grow-1">
                             <label class="checkLabel"><input type="checkbox" name="current" class="check" checked/> 2020 Enacted Map</label><br>
                             <!-- <a class="link" id="tutorial" href="#gerrymandering"></a><img class="qMap" src="img/questionmark.png" class="d-inline-block align-top"><br> -->
-                            <label class="checkLabel"><input type="checkbox" name="effGap" class="check" checked /> Max effGap Map</label>
+                            <label class="checkLabel"><input type="checkbox" name="modularity" class="check"  checked/> Max Interaction Ratio Map</label>
+                            <a class="d-inline-block align-center" id="metric" href="#Interaction Ratio"><img class="qMap" src="img/questionmark.png"></a><br>
+                            <label class="checkLabel"><input type="checkbox" name="effGap" class="check" /> Max Efficiency Gap Map</label>
                             <!-- <a class="link" id="metric" href="#Efficiency Gap"><img class="qMap" src="img/questionmark.png" class="d-inline-block align-top"></a><br> -->
                             <a class="d-inline-block align-center" id="metric" href="#Efficiency Gap"><img class="qMap" src="img/questionmark.png"></a><br>
                             <label class="checkLabel"><input type="checkbox" name="compactness" class="check" /> Max Compactness Map</label>
                             <a  class="d-inline-block align-center" id="metric" href="#Compactness"><img class="qMap" src="img/questionmark.png"></a><br>
-                            <label class="checkLabel"><input type="checkbox" name="modularity" class="check" /> Max Modularity Map</label>
-                            <a class="d-inline-block align-center" id="metric" href="#Modularity"><img class="qMap" src="img/questionmark.png"></a><br>
                             <label class="checkLabel"><input type="checkbox" name="pmc" class="check" /> PMC Map</label><br>
                             <p id="mapUncheck">* To choose a new map, uncheck a currently selected map and recheck a new map.</p>
                         </div>
@@ -194,8 +193,8 @@
                 </div>
 
                 <div class="row">
-                    <div id="Modularity" class="col-lg">
-                        <h4>Modularity:</h4>
+                    <div id="Interaction Ratio" class="col-lg">
+                        <h4>Interaction Ratio:</h4>
                         <p class='paragaphText'> 
                         A communitiy is a group of people that have more in common with each other, on average, than they do with
                         people from another group. Redistricting groups people across geographic space, and therefore can either split
@@ -221,10 +220,10 @@
                         For such an optimization, we need both a formula for defining community strength, and a measurement to use in that formula.
                         For the measurement, we employ human mobility flows from Safegraph. The mobility flows consist of anomymized cellphone counts 
                         that have moved from one census block group to another during a given time span. To quantify community strength, we use 
-                        modularity, which is freqeuntly used in community detection research. Modularity here is defined as the sum of district intra flow
+                        the interaction ratio, which is related to the frequently used modularity measurement in community detection research. We define the interaction ratio here as the sum of district intra flow
                         divided by the sum of district inter flows, where intra flows are mobility flows originating in one district and ending in that same
                         district, while inter flows are mobility flows originating in one district and ending in another. By summing across all districts
-                        to calculate modularity, we can get a sense of how the districting plan, as a whole, keeps communties intact.
+                        to calculate the interaction ratio, we can get a sense of how the districting plan, as a whole, keeps communties intact.
                         </p>
                         <p class = 'text-center' >
                             <img src="img/example_flows.png" width="500" height="500">
@@ -235,7 +234,7 @@
                         <br>
                         <p class= 'text-center'>
                             <img src="img/flows_equation.png" style = "width: 900px;height: auto;">
-                            <figcaption class = 'text-center'>Calculating modularity for the example districting plan.</figcaption>
+                            <figcaption class = 'text-center'>Calculating the interaction ratio for the example districting plan.</figcaption>
                         </p>
                         <!-- <p class="text-center"> -->
                             
@@ -416,6 +415,24 @@
                     </div>
                 </div>
     
+        </div>
+        <div class="row">
+            <div id="About" class="col-lg">
+                <h4>About</h4>
+                <p class='paragaphText'>
+                    This webmap was produced by the <a href ="https://geography.wisc.edu/geods/">GeoDS Lab</a> at the 
+                    University of Wisconsin, Madison.       
+                             
+                    <!-- Funding was provided by a University of Wisconsin 2020 WARF Discovery Initiative, as 
+                    part of a project titled "Multidisciplinary Approach for Redistricting Knowledge". -->
+                    
+                    Please contact <a href = "mailto:song.gao@wisc.edu?subject = Feedback&body = Message">
+                        Song Gao
+                        </a> with any inquiries.
+                </p>
+                
+            </div>
+            
         </div>
         <div id="sttop"></div>
 
