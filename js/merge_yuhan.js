@@ -4,10 +4,11 @@ var attributes = ["population","White","Black","HISPANIC","Asian","AmIndian",//"
                 // "18+_Pop","PISLAND18","WHITE18","BLACK18","HISPANIC18","ASIAN18","AMINDIAN18",
                 "D_votes", "R_votes","D_percents","R_percents",
                 "intra_flows","inter_flows"]
-var proposals = ["current", "effGap", "compactness", "modularity", "pmc"] // the same as the checkbox class (cb-xx) and file names
+// var proposals = ["current", "effGap", "compactness", "modularity", "pmc"] // the same as the checkbox class (cb-xx) and file names
+var proposals = ["Enacted", "Efficiency-Gap", "Compactness", "Interaction-Ratio", "PMC"] // the same as the checkbox class (cb-xx) and file names
 var curAttribute = attributes[0], // variable for symbolization
-    curProp1 = "current", //proposals[0], // proposals to show on the map, left one
-    curProp2 = "effGap" //proposals[1]; // right on, change default curProp1 and curProp2 to the "standard" ones on loading
+    curProp1 = "Enacted", //proposals[0], // proposals to show on the map, left one
+    curProp2 = "Interaction-Ratio" //proposals[1]; // right on, change default curProp1 and curProp2 to the "standard" ones on loading
 var oldChecked = [curProp1,curProp2];
 var propCount = 0; // at most 2 proposals can be chosen
 var zoomLevel = 10; // make sure two maps zoom in to the same level
@@ -47,8 +48,8 @@ var colorClasses = [
 
 var colorScale;
 var mapPropDict = {
-    'current':'map1',
-    'effGap':'map2'
+    'Enacted':'map1',
+    'Effieciency Gap':'map2'
 }
 console.log("mapPropDict", mapPropDict)
 var oldLayers = []
@@ -130,7 +131,7 @@ function plusSlides(n) {
 
 // Thumbnail image controls
 function currentSlide(n) {
-    console.log("current", n)
+    console.log("current slide", n)
     showSlides(slideIndex = n);
 }
 
@@ -306,8 +307,51 @@ function updateOneCheck(steadyMap, curProp, removeVar){
 function updateBothCheck(){
     getNewData(map1, curProp1);
     getNewData(map2, curProp2);
-    map1._controlContainer.getElementsByClassName('title_class')[0].innerHTML = curProp1 + ' map';
-    map2._controlContainer.getElementsByClassName('title_class')[0].innerHTML = curProp2 + ' map';
+
+    switch(curProp1) {
+        case 'Enacted':
+            fileName1 ="Enacted";
+            break;
+        case 'EfficiencyGap':
+            fileName1 ="Efficiency-Gap";
+            break;
+        case 'Compactness':
+            fileName1 ="Compactness";
+            break;
+        case 'InteractionRatio':
+            fileName1 ="Interaction-Ratio";
+            break;
+        case 'PMC':
+            fileName1 ="PMC";
+            break;
+        default:
+            fileName1 = curProp1;
+            break;
+    }
+    switch(curProp2) {
+        case 'Enacted':
+            fileName2 ="Enacted";
+            break;
+        case 'Efficiency-Gap':
+            fileName2 ="Efficiency-Gap";
+            break;
+        case 'Compactness':
+            fileName2 ="Compactness";
+            break;
+        case 'Interaction-Ratio':
+            fileName2 ="Interaction-Ratio";
+            break;
+        case 'PMC':
+            fileName2 ="PMC";
+            break;
+        default:
+            fileName2 = curProp1;
+            break;
+    }
+    console.log("fileName1 = "+fileName1);
+    console.log("fileName2 = "+fileName2);
+    map1._controlContainer.getElementsByClassName('title_class')[0].innerHTML = fileName1 + ' map';
+    map2._controlContainer.getElementsByClassName('title_class')[0].innerHTML = fileName2 + ' map';
     updateLineLegend();
 }
 
@@ -409,6 +453,7 @@ function createMap(panel, curProp){
 }
 
 //function to retrieve the data and place it on the map
+// ["Enacted", "Efficiency Gap", "Compactness", "Interaction Ratio", "PMC"]
 function getChoroData(map, curProp){
     
     fetch("data/"+curProp+".geojson")
