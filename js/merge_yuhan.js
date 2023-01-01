@@ -1495,47 +1495,49 @@ function startIntro(){
     introJs().setOptions({
         steps: [{
           title: 'Welcome',
-          intro: "In the United States, political districts are redrawn every 10 years to reflect new Census data. "
-          +"When redrawing electoral district boundaries, legislators may try to create districts so as to create "
-          +"an advantage for their party: this is gerrymandering.<br>"
-          +"<p class = 'text-center' ><img src='img/1280px-The_Gerry-Mander_Edit.png' width='280px' height='280px'>"
-          +"<figcaption class = 'text-center'>Drawing of the salamander-like district shape that inspired the term 'gerrrymander'.</figcaption></p>"
-        },{
-            title: 'About this project',
-            intro: "<b>Research questions</b>"
-            +"<br>Though political gerrymandering is legal and to some degree unavoidable, many scholars"
-            +"agree that it is harmful for our democracy: if voters feel like their vote doesn't count, they"
-            +"lose faith in our government.<br>"
-            +"<b>Data</b>"
-            +"<br><p class = 'text-center' >"
-            +"<img src='img/OD_flow.png' width='250' height='220'> "
-            +"<figcaption class = 'text-center'>Drawing of the salamander-like district shape that inspired the term 'gerrrymander'.</figcaption></p>"
-          },
+          intro: "Hello! Thanks for coming to our webmap. If this is your first time, keep clicking the Next button to go through the website tutorial. Otherwise, just exit out of the tutorial and enjoy the webmap! "
+        //   +"When redrawing electoral district boundaries, legislators may try to create districts so as to create "
+        //   +"an advantage for their party: this is gerrymandering.<br>"
+        //   +"<p class = 'text-center' ><img src='img/1280px-The_Gerry-Mander_Edit.png' width='280px' height='280px'>"
+        //   +"<figcaption class = 'text-center'>Drawing of the salamander-like district shape that inspired the term 'gerrrymander'.</figcaption></p>"
+        }
+        // ,{
+        //     title: 'About this project',
+        //     intro: "<b>Research questions</b>"
+        //     +"<br>Though political gerrymandering is legal and to some degree unavoidable, many scholars"
+        //     +"agree that it is harmful for our democracy: if voters feel like their vote doesn't count, they"
+        //     +"lose faith in our government.<br>"
+        //     +"<b>Data</b>"
+        //     +"<br><p class = 'text-center' >"
+        //     +"<img src='img/OD_flow.png' width='250' height='220'> "
+        //     +"<figcaption class = 'text-center'>Drawing of the salamander-like district shape that inspired the term 'gerrrymander'.</figcaption></p>"
+        //   }
+          ,
           {
             element: document.querySelector('#tutorial'),
-            intro: 'Navigate to tutorial'
+            intro: 'Click this botton to drop down to the part of the webpage that has some background information regarding the purpose of the website and some details regarding plot elements.'
           },
         {
           element: document.querySelector('#proposalPanel'),
-          intro: 'Uncheck a currently selected map and recheck a new map'
+          intro: 'To change which maps are displayed, uncheck a currently selected map and recheck a new map.'
         },
         {
             element: document.querySelector('.qMap'),
-            intro: 'Learn about the metric'
+            intro: 'Learn about the metric being optimized in this map.'
           },
         {
             element: document.querySelector('#pcpPanel'),
-            intro: 'Choose one variable to symbolize the maps'
+            intro: 'This parallel coordinate plot (PCP) visualizes attribute values for the districts of the two maps. Each maps\' districts are shown as lines with the same color (i.e. all lines for districts from map A are blue).'
         },
         {
             element: document.querySelector('.qMap2'),
-            intro: 'Learn about the attributes'
+            intro: 'Learn about the attributes in the PCP.'
         },
         
         {
             
             // element: document.querySelector('#'+attributes[7]),
-            intro: 'Click to change the attribute',
+            intro: 'Click to change the attribute expressed in the PCP.',
             preChange: function(){
                 this.element = document.querySelector('#'+attributes[7]);
               this.position = "top";
@@ -1543,24 +1545,21 @@ function startIntro(){
             },
         {
             element: document.querySelector('#mapPanel'),
-            intro: 'Selected maps'
+            intro: 'Selected maps.'
         },
         {
             element: document.querySelector('.reexpress-control'),
-            intro: 'Reexpress'
+            intro: 'Reexpress the maps as proportional symbol maps or bar charts.'
         },
         {
             element: document.querySelector('.leaflet-control-layers'),
-            intro: 'Overlay'
+            intro: 'Overlay census block group boundaries or other map borders.'
         },
         {
             element: document.querySelector('.leaflet-control-zoom-in'),
             intro: 'Zoom in and out'
         },
-        {
-            element: document.querySelector('.leaflet-control-zoom-in'),
-            intro: 'Zoom in and out'
-        },
+    
     ],
         exitOnOverlayClick: false
       })
