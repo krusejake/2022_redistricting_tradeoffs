@@ -1,9 +1,21 @@
 //declare map var in global scope
 var map1, map2, pcp;
-var attributes = ["population","White","Black","HISPANIC","Asian","AmIndian",//"PISLAND",
-                // "18+_Pop","PISLAND18","WHITE18","BLACK18","HISPANIC18","ASIAN18","AMINDIAN18",
-                "D_votes", "R_votes","D_percents","R_percents",
-                "intra_flows","inter_flows"]
+// var attributes = ["population","White","Black","HISPANIC","Asian","AmIndian",//"PISLAND",
+//                 // "18+_Pop","PISLAND18","WHITE18","BLACK18","HISPANIC18","ASIAN18","AMINDIAN18",
+//                 // "D_votes", "R_votes","D_percents","R_percents",
+//                 "district_effGap", "Polsby_Popper",
+//                 "intra_flows","inter_flows"]
+var attributes = ['Polsby_Popper',
+'Intra_flows',
+'Inter_flows',
+'Dis_EffGap',
+'geometry',
+'White',
+'Black',
+'Hispanic',
+'Asian',
+'AmIndian',
+'Population']
 // var proposals = ["current", "effGap", "compactness", "modularity", "pmc"] // the same as the checkbox class (cb-xx) and file names
 var proposals = ["Enacted", "Efficiency-Gap", "Compactness", "Interaction-Ratio", "PMC"] // the same as the checkbox class (cb-xx) and file names
 var curAttribute = attributes[0], // variable for symbolization
@@ -18,28 +30,38 @@ var color1 = "rgba(116,169,207, .8)", color2 = "rgba(252,141,89, .8)";
 
 // Not work when changing initial setting of expression
 // need to update pcp and pcp legend when changing proposal 
-
-var extents =  { 'population': [723, 750],
-            '18+_Pop': [559, 597],
-            'PISLAND18': [0.2, 0.3],
-            'WHITE18': [303, 532],
-            'BLACK18': [3.2, 165],
-            'HISPANIC18': [6.9, 62],
-            'ASIAN18': [6.791, 19.6],
-            'AMINDIAN18': [2.0, 19.2],
-            'PISLAND': [0.2, 0.4],
-            'White': [336, 678],
-            'Black': [5.7, 238],
-            'HISPANIC': [12.1, 105],
-            'Asian': [12.4, 37.1],
-            'AmIndian': [2.0, 26.3],
-            'D_votes': [120, 271.6],
-            'D_percents': [0.33, 0.86],
-            'R_votes': [44.7, 254.8],
-            'R_percents': [0.14, 0.67],
-            'intra_flows': [1.65, 5.23],
-            'inter_flows': [1.93, 5.54],
-                }
+var extents = {'Polsby_Popper': [0.057, 0.556],
+                'Intra_flows': [3737395, 5625174],
+                'Inter_flows': [454871, 2612121],
+                'Dis_EffGap': [-50, 50],
+                // 'geometry': [9999999999999, 0],
+                'White': [327815, 674258],
+                'Black': [5292, 237478],
+                'Hispanic': [11095, 119757],
+                'Asian': [8797, 37807],
+                'AmIndian': [2137, 25052],
+                'Population': [702279, 747575]}
+// var extents =  { 'population': [723, 750],
+//             '18+_Pop': [559, 597],
+//             'PISLAND18': [0.2, 0.3],
+//             'WHITE18': [303, 532],
+//             'BLACK18': [3.2, 165],
+//             'HISPANIC18': [6.9, 62],
+//             'ASIAN18': [6.791, 19.6],
+//             'AMINDIAN18': [2.0, 19.2],
+//             'PISLAND': [0.2, 0.4],
+//             'White': [336, 678],
+//             'Black': [5.7, 238],
+//             'HISPANIC': [12.1, 105],
+//             'Asian': [12.4, 37.1],
+//             'AmIndian': [2.0, 26.3],
+//             'D_votes': [120, 271.6],
+//             'D_percents': [0.33, 0.86],
+//             'R_votes': [44.7, 254.8],
+//             'R_percents': [0.14, 0.67],
+//             'intra_flows': [1.65, 5.23],
+//             'inter_flows': [1.93, 5.54],
+//                 }
 
 var colorClasses = [
     "rgba(241,238,246,.7)",
