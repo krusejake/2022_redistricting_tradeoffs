@@ -5,17 +5,18 @@ var map1, map2, pcp;
 //                 // "D_votes", "R_votes","D_percents","R_percents",
 //                 "district_effGap", "Polsby_Popper",
 //                 "intra_flows","inter_flows"]
-var attributes = ['Polsby_Popper',
-'Intra_flows',
-'Inter_flows',
-'Dis_EffGap',
-'geometry',
-'White',
-'Black',
-'Hispanic',
-'Asian',
-'AmIndian',
-'Population']
+var attributes = [
+    'Intra_flows',
+    'Inter_flows',
+    'Dis_EffGap',
+    'Polsby_Popper',
+    'Pop',
+    'White_%',
+    'Black_%',
+    'Hispanic_%',
+    'Asian_%',
+    'AmIndian_%'
+]
 // var proposals = ["current", "effGap", "compactness", "modularity", "pmc"] // the same as the checkbox class (cb-xx) and file names
 var proposals = ["Enacted", "Efficiency-Gap", "Compactness", "Interaction-Ratio", "PMC"] // the same as the checkbox class (cb-xx) and file names
 var curAttribute = attributes[0], // variable for symbolization
@@ -30,17 +31,17 @@ var color1 = "rgba(116,169,207, .8)", color2 = "rgba(252,141,89, .8)";
 
 // Not work when changing initial setting of expression
 // need to update pcp and pcp legend when changing proposal 
-var extents = {'Polsby_Popper': [0.057, 0.556],
-                'Intra_flows': [3737395, 5625174],
-                'Inter_flows': [454871, 2612121],
-                'Dis_EffGap': [-50, 50],
-                // 'geometry': [9999999999999, 0],
-                'White': [327815, 674258],
-                'Black': [5292, 237478],
-                'Hispanic': [11095, 119757],
-                'Asian': [8797, 37807],
-                'AmIndian': [2137, 25052],
-                'Population': [702279, 747575]}
+var extents = {
+'Polsby_Popper': [0.05, 0.56],
+'Intra_flows': [37, 60],
+'Inter_flows': [4, 30],
+'Dis_EffGap': [-50, 50],
+'Pop': [687333, 727988],
+'White_%': [0.45, 1],
+'Black_%': [0.00, 0.40],
+'Hispanic_%': [0.02, 0.20],
+'Asian_%': [0.01, 0.10],
+'AmIndian_%': [0.00, 0.04]}
 // var extents =  { 'population': [723, 750],
 //             '18+_Pop': [559, 597],
 //             'PISLAND18': [0.2, 0.3],
@@ -886,7 +887,7 @@ function createPropSymbols(json, map){
 // attach popups to features
 function onEachFeature(feature, layer, map, expression) {
     mapid = map.boxZoom._container.id;
-    districtid = feature.properties.assignment_0;
+    districtid = feature.properties.Pop;
     // if (expression==curExpression){
     layer.setStyle({
         className: "polygon "+ expression + " " + mapid + ' ' + mapid +'-'+districtid
@@ -895,13 +896,13 @@ function onEachFeature(feature, layer, map, expression) {
         mouseover: function(event){
             // console.log(event.target)
             mapid = event.target._map._container.id
-            districtid = event.target.feature.properties.assignment_0
+            districtid = event.target.feature.properties.Pop
             // console.log(mapid, districtid)
             highlight("."+ mapid +'-'+districtid)
         },
         mouseout: function(event){
             mapid = event.target._map._container.id
-            districtid = event.target.feature.properties.assignment_0
+            districtid = event.target.feature.properties.Pop
             dehighlight("."+mapid+'-'+districtid)
         },
     });
@@ -1021,10 +1022,10 @@ function createBar(json, mapid){
             return b.properties[curAttribute]-a.properties[curAttribute]
         })
         .attr("class", function(d){
-            return "bar " + mapid + '-' + d.properties.assignment_0;
+            return "bar " + mapid + '-' + d.properties.Pop;
         })
         .attr("id", function(d){
-            return mapid + '-' + d.properties.assignment_0;
+            return mapid + '-' + d.properties.Pop;
         })
         .attr("width", chartInnerWidth / json.features.length - 1)
         .attr("x", function(d, i){
@@ -1112,6 +1113,7 @@ function createPCP(json, mapid){
     var y = {}
     for (i in attributes) {
         attr = attributes[i]
+        console.log('attr = ',attr);
         y[attr] = d3.scaleLinear()
         .domain(extents[attr])
         //     d3.extent(json.features, function(d) { 
@@ -1138,10 +1140,12 @@ function createPCP(json, mapid){
         .enter()
         .append("path")
         .attr("class", function(d){      
-            return "lines "  + mapid  + ' ' + mapid + '-' + d.properties.assignment_0;        
+            return "lines "  + mapid  + ' ' + mapid + '-' + d.properties.Pop;        
         })    
         .attr("id", function(d){
-            return mapid + '-' + d.properties.assignment_0;
+            console.log(d.properties);
+            console.log(mapid + '-' + d.properties.Pop);
+            return mapid + '-' + d.properties.Pop;
         }) 
         .attr("d", path)   
         .style("fill", "none")
