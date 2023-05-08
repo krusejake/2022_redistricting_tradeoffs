@@ -1530,8 +1530,8 @@ function startIntro(){
         // ,{
         //     title: 'About this project',
         //     intro: "<b>Research questions</b>"
-        //     +"<br>Though political gerrymandering is legal and to some degree unavoidable, many scholars"
-        //     +"agree that it is harmful for our democracy: if voters feel like their vote doesn't count, they"
+        //     +"<br>'HEYEYEYE Though political gerrymandering is legal and to some degree unavoidable, many scholars"
+        //     +" agree that it is harmful for our democracy: if voters feel like their vote doesn't count, they"
         //     +"lose faith in our government.<br>"
         //     +"<b>Data</b>"
         //     +"<br><p class = 'text-center' >"
@@ -1541,7 +1541,7 @@ function startIntro(){
           ,
           {
             element: document.querySelector('#tutorial'),
-            intro: 'Click this botton to drop down to the part of the webpage that has some background information regarding the purpose of the website and some details regarding plot elements.'
+            intro: 'Click this botton to drop down to the part of the webpage that has some background information regarding the purpose of the website and plot elements.'
           },
         {
           element: document.querySelector('#proposalPanel'),
@@ -1553,7 +1553,7 @@ function startIntro(){
           },
         {
             element: document.querySelector('#pcpPanel'),
-            intro: 'This parallel coordinate plot (PCP) visualizes attribute values for the districts of the two maps. Each maps\' districts are shown as lines with the same color (i.e. all lines for districts from map A are blue).'
+            intro: 'This parallel coordinate plot (PCP) visualizes attribute values for the districts of the two maps. Each map\'s districts are shown as lines with the same color (i.e. all lines for districts from map A are blue).'
         },
         {
             element: document.querySelector('.qMap2'),
@@ -1571,7 +1571,7 @@ function startIntro(){
             },
         {
             element: document.querySelector('#mapPanel'),
-            intro: 'Selected maps.'
+            intro: 'Viewing panes for the two maps selected with the check boxes above. Click and drag on either map to move the maps.'
         },
         {
             element: document.querySelector('.reexpress-control'),
@@ -1583,8 +1583,16 @@ function startIntro(){
         },
         {
             element: document.querySelector('.leaflet-control-zoom-in'),
-            intro: 'Zoom in and out'
+            intro: 'Zoom in and out.'
         },
+        {
+            element: document.querySelector('#container3d'),
+            intro: 'Click and drag anywhere on the interactive cube to adjust the viewing angle. Hover over points to see their values.'
+        },
+        {
+            element: document.querySelector('#header'),
+            intro: 'We hope you enjoy exploring the maps!'
+          },
     
     ],
         exitOnOverlayClick: false
