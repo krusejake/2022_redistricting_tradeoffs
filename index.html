@@ -90,7 +90,7 @@
                 <div class="row d-flex flex-column" style="height: 240px">
                     <div id="proposalPanel" class="col-lg-3 col-md-3 d-flex flex-column align-content-start flex-wrap flex-grow-1">
                         <div class="row" style="height: 40px">
-                            <p id="mapCheck"> Choose two maps to be displayed.</p>
+                            <p id="mapCheck"> Choose two maps to be displayed</p>
                         </div>
                         
                         <div id="checkboxGroup" class="flex-grow-1">
@@ -111,16 +111,33 @@
                     </div> 
                     
                     <div id="pcpPanel" class="col-lg-9 col-md-9 d-flex flex-column align-content-start flex-wrap flex-grow-1">
-                        <div class="d-flex align-items-stretch flex-row" style="height:40px;">
-                            <p id="attrSelection" class="col-lg-9 col-md-9 flex-grow-1">Choose one variable to symbolize the maps.
+                        <div class="d-flex align-items-stretch flex-row" style="height:20px;">
+                            <p id="attrSelection" class="col-lg-9 col-md-9 flex-grow-1">Parallel Coordinates Plot 
                                 <a class="d-inline-block align-center" id="metric2" href="#Metadata">
                                     <img class="qMap2" src="img/questionmark.png" style></a><br>
                             </p>
-                    
+                            
                         </a>
                             <!-- <a class="d-inline-block align-center" id="metric" href="#Metadata"><img class="qMap" src="img/questionmark.png"></a><br> -->
-                            <div id="pcpLegend" class="col-lg-3 col-md-3 flex-grow-1"></div>
+                            <!-- <div class="col-lg-3 col-md-3 flex-grow-1"> -->
+                                <!-- <p id="mapUncheck">
+                                    * Line colors for the district values in each map.
+                                </p> -->
+                            <!-- </div> -->
+                            <div id="pcpLegend" class="col-lg-3 col-md-3 flex-grow-1">
+                            
+                            </div>
                         </div>
+
+                        <!-- <div id="pcpDescription" class="d-flex align-items-stretch flex-row" style="height:30px;"> -->
+                        <div class="d-flex align-content-baseline" style="height:40px; align-items: center; ">
+                            <p id="mapUncheck" height="10px">
+                                * Choose which variable to symbolize in the map panes by 
+                                clicking a column name (e.g. DisEff_Gap).
+                            </p>
+                        </div>
+                    
+                    
 
                         <div id="pcpPlot" class="flex-grow-1"></div>
                         
@@ -129,7 +146,12 @@
 
 
                 <div class="row flex-grow-1 d-flex align-items-stretch align-content-around flex-column" id="mapPanel" >
-                    <div class="row" style="height: 40px; width: 100%">
+                    <div class="row" style="height: 80px; width: 100%">
+                        <div id="mapLegend" class="col-lg-12 col-md-12">
+                            <p id="attrSelection">
+                                Color bar legend for attribute currently shown on maps
+                            </p>
+                        </div>
                         <div id="mapLegend" class="col-lg-12 col-md-12"></div>
                     </div>
                     <div class="row flex-grow-1 d-flex align-items-stretch flex-row" style="width: 100%">
@@ -160,15 +182,15 @@
                 <p class='paragaphText'>
                     While the above map panes allow us to explore multiple redistricting, there are in fact trillions of maps that could be made for the eight Congressional House districts.
                     To get a sense of the properties of district plans from this vast space of redistricting possibilities, we sample some of the maps and plot them in three dimensions, allowing
-                    for a multi-dimensional analysis. This also helps us know how well a given map performs relative to reasonable alternatives. <b>Click and drag the cube to move it around!</b> 
+                    for a multi-dimensional analysis. This also helps us know how well a given map performs relative to reasonable alternatives. <mark><b>Click and drag the cube to move it around!</b></mark>
                 </p>
             </div>                    
         </div>
 
         <div class="container-fluid h-80">
             <div class="row h-100 w-100">
-                <div class="flex-grow-1 d-flex justify-content-center" id="container3d" >
-                    <iframe src="figure_229.html" style="width: 626px; height: 525px;" class="d-iframe align-center"></iframe>
+                <div class="flex-grow-1 d-flex justify-content-center" id="container3d">
+                    <iframe src="figure_229.html" style="width: 626px; height: 525px;" class="d-iframe align-center" ></iframe>
                 </div>
             </div>
         </div>
